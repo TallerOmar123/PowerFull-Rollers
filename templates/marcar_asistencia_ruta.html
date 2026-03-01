@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Asistencia: {{ ruta.nombre }}</title>
+</head>
+<body class="bg-dark text-white p-4">
+    <div class="container border border-secondary rounded p-4 bg-secondary bg-opacity-10 shadow">
+        <h2 class="text-success">📍 Asistencia: {{ ruta.nombre }}</h2>
+        <p class="text-muted">Fecha: {{ ruta.fecha }}</p>
+        <hr>
+
+        <form action="/guardar_asistencia_ruta/{{ id_ruta }}" method="POST">
+            <div class="list-group mb-4">
+                {% for alumno in alumnos %}
+                <label class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+                    <div>
+                        <input class="form-check-input me-3" type="checkbox" name="asistentes" 
+                               value="{{ alumno.nombre }}" 
+                               {% if alumno.nombre in ruta.asistentes %}checked{% endif %}>
+                        {{ alumno.nombre }}
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="/rutas" class="btn btn-outline-light">Cancelar</a>
+                <button type="submit" class="btn btn-success btn-lg">💾 Guardar Asistencia</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

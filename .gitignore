@@ -1,0 +1,26 @@
+# ==========================================
+# ARCHIVOS IGNORADOS POR EL GUARDIA DE SEGURIDAD
+# ==========================================
+
+# 🛑 1. Ignorar el entorno virtual (ESTO ES VITAL)
+# Evita subir los gigas de librerías instaladas; el servidor las instalará solo.
+venv/
+.venv/
+env/
+
+# 🔑 2. Ignorar la caja fuerte de contraseñas y llaves
+.env
+
+# 🐍 3. Ignorar la basura temporal de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 💻 4. Ignorar archivos del sistema operativo (basura de Windows/Mac)
+.DS_Store
+Thumbs.db
+
+# 📁 5. Ignorar carpetas de editores
+.vscode/
+.idea/

@@ -1,0 +1,987 @@
+<!-- HTML es el estándar de arquitectura web que organiza y etiqueta el contenido mediante una 
+ estructura jerárquica. Su función técnica es servir de interfaz de captura y visualización, 
+ actuando como el puente estructural donde el usuario interactúa con la lógica de datos. -->
+
+
+
+
+
+
+<!-- SECCIÓN: ESTRUCTURA BASE E IDIOMA.-->
+<!-- Es la declaración de estándares que inicializa el documento bajo la versión HTML5, 
+asegurando que el navegador procese correctamente los elementos modernos. Define la raíz del 
+proyecto y establece el español como idioma o
+ficial para optimizar la accesibilidad y el 
+comportamiento de los buscadores. -->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFull Club - MotoTech</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* ========================================================================================= */
+        /* SECCIÓN: ESTÉTICA DARK NEON PREMIUM                                                       */
+        /* Define la identidad visual. Establece el fondo oscuro, el efecto de "luces de neón" en    */
+        /* los bordes y suaviza las esquinas para una experiencia de aplicación móvil moderna.       */
+        /* ========================================================================================= */
+
+        /* 1. Fondo principal estilo 'Dark Mode' Premium */
+        body {
+            background-color: #0b0f11;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* 2. Tarjetas con bordes redondeados y efecto Neón */
+        .card {
+            background-color: #161b1e !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(0, 242, 255, 0.15) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* 3. Acentos de color para productividad */
+        .text-warning {
+            color: #ffcc00 !important;
+        }
+
+        /* Amarillo para volumen */
+        .text-info {
+            color: #00f2ff !important;
+        }
+
+        /* Cian para rendimiento */
+        .text-danger {
+            color: #ff4d4d !important;
+        }
+
+        /* Rojo para alertas */
+
+        /* 4. Estilo especial para los títulos de las tarjetas */
+        .card-header,
+        .card-body h6 {
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* 5. Personalización del Calendario para que no desentone */
+        .fc {
+            background: #161b1e;
+            padding: 15px;
+            border-radius: 20px;
+        }
+
+        .fc-toolbar-title {
+            color: #00f2ff !important;
+        }
+
+        /* 6. Estilo táctico para botones y tarjetas */
+        .btn-primary {
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .border-5 {
+            border-left-width: 6px !important;
+        }
+
+        .rounded-circle.shadow-sm {
+            border: 2px solid #f8f9fa;
+        }
+
+        .tarjeta-patinador {
+            transition: all 0.3s ease-in-out;
+            border-radius: 15px;
+            background: #1e1e1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tarjeta-patinador:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5) !important;
+            border: 1px solid #ffc107;
+        }
+
+        .seccion-titulo {
+            border-left: 5px solid #ffc107;
+            padding-left: 15px;
+            margin-bottom: 30px;
+        }
+
+        .efecto-salto {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .efecto-salto:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Elevación segura para los menús desplegables (Evita el Lag) */
+        .dropdown-menu {
+            z-index: 1050 !important;
+        }
+
+        /* ========================================================================================= */
+        /* FIX ANTICOLISIÓN CERO LAG PARA EL MENÚ DE COBROS                                          */
+        /* Eleva la tarjeta actual solo cuando el profesor hace clic en el botón de cobrar,          */
+        /* evitando que la tarjeta de abajo corte el menú, y sin causar lentitud de renderizado.     */
+        /* ========================================================================================= */
+        .tarjeta-patinador {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tarjeta-patinador:has(.dropdown-menu.show) {
+            z-index: 1050 !important;
+        }
+    </style>
+</head>
+
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+                background: '#161b1e',
+                color: '#e0e0e0',
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            {% for category, message in messages %}
+            let iconType = 'info';
+            if ('{{ category }}' === 'success') { iconType = 'success'; }
+            if ('{{ category }}' === 'danger') { iconType = 'error'; }
+            if ('{{ category }}' === 'warning') { iconType = 'warning'; }
+
+            Toast.fire({
+                icon: iconType,
+                title: '{{ message }}',
+                customClass: { popup: 'alerta-neon-tech' }
+            });
+            {% endfor %}
+        });
+    </script>
+    <style>
+        .alerta-neon-tech {
+            border: 1px solid rgba(0, 242, 255, 0.3) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8) !important;
+            border-radius: 15px !important;
+        }
+
+        .swal2-timer-progress-bar {
+            background: #00f2ff !important;
+        }
+    </style>
+    {% endif %}
+    {% endwith %}
+</div>
+
+<body class="bg-dark text-white text-center" style="padding-top: 50px;">
+    <div class="container">
+        <h1 style="font-size: 4rem;">🛼 PowerFull Rollers</h1>
+        <hr class="bg-light">
+        <p class="lead">Gestor de Alumnos - Profesor: David</p>
+
+        <div class="text-center my-4">
+            <a href="/historial" class="btn btn-outline-info px-4">
+                <i class="bi bi-clock-history"></i> Ver Historial
+            </a>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-11">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card bg-dark border-warning h-100 shadow-sm">
+                            <div class="card-body text-center">
+                                <h6 class="text-warning text-uppercase small">Volumen Mensual</h6>
+                                <h2 class="text-white mb-0">{{ stats_profe.total_mes }}</h2>
+                                <small class="text-muted">Asistencias registradas</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-dark border-info h-100 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-info text-uppercase small text-center">Top Rendimiento 🏆</h6>
+                                <div class="mt-2">
+                                    {% for nombre, total in stats_profe.top_alumnos %}
+                                    <div class="d-flex justify-content-between border-bottom border-secondary py-1">
+                                        <span class="text-white small">{{ nombre }}</span>
+                                        <span class="badge bg-info text-dark">{{ total }}</span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-dark border-danger h-100 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-danger text-uppercase small text-center">Alertas de Ausencia ⚠️</h6>
+                                <div class="mt-2 text-center">
+                                    {% if stats_profe.alertas %}
+                                    {% for nombre in stats_profe.alertas %}
+                                    <span
+                                        class="badge rounded-pill bg-outline-danger border border-danger text-danger mb-1 d-inline-block">
+                                        {{ nombre }}
+                                    </span>
+                                    {% endfor %}
+                                    {% else %}
+                                    <p class="text-success small mb-0">¡Grupo 100% activo! 🛼</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5 mb-5">
+            <div class="col-md-10">
+                <div class="card bg-dark border-warning shadow-lg">
+                    <div
+                        class="card-header border-warning text-warning d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="bi bi-calendar3"></i> Agenda de Entrenamientos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/rutas" class="btn btn-success px-4 ms-2">
+            <i class="bi bi-map"></i> Rutas Urbanas
+        </a>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 border p-4 rounded bg-secondary bg-opacity-10 efecto-salto">
+                <form action="/registrar" method="POST" enctype="multipart/form-data">
+                    <div class="row border-bottom border-secondary mb-3 pb-2">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nombre Completo:</label>
+                            <input type="text" name="nombre" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Cédula/TI:</label>
+                            <input type="text" name="cedula" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">WhatsApp:</label>
+                            <input type="text" name="whatsapp" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Fecha Nacimiento:</label>
+                            <input type="date" name="fecha_nac" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row border-bottom border-secondary mb-3 pb-2 bg-info bg-opacity-10 p-2 rounded">
+                        <div class="col-6 mb-3">
+                            <label class="form-label text-info fw-bold">Tipo de Sangre:</label>
+                            <select name="sangre" class="form-select">
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label text-info fw-bold">EPS:</label>
+                            <input type="text" name="eps" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label text-info fw-bold">Foto del Perfil:</label>
+                        <input type="file" name="foto" class="form-control border-info bg-dark text-white"
+                            accept="image/*">
+                        <small class="text-muted">Puedes tomar una foto o elegir de la galería</small>
+                    </div>
+
+                    <div class="bg-warning bg-opacity-10 p-2 rounded">
+                        <label class="form-label text-warning fw-bold">🚨 CONTACTO DE EMERGENCIA:</label>
+                        <div class="row">
+                            <div class="col-12 mb-2">
+                                <input type="text" name="emergencia_nombre" class="form-control"
+                                    placeholder="Nombre completo del contacto">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="parentesco" class="form-control" placeholder="Parentesco">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="emergencia_tel" class="form-control"
+                                    placeholder="Teléfono emergencia">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-4 shadow">💎 REGISTRAR EN
+                        POWERFULL</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="seccion-titulo">
+                <h3 class="text-white fw-bold">📋 Panel de Control de Patinadores</h3>
+                <p class="text-muted small">Gestión rápida: Cobros por Semana, Diario y Asistencia</p>
+            </div>
+
+            <div class="position-sticky shadow-lg p-2 mb-4 rounded-pill"
+                style="top: 15px; z-index: 1050; background: rgba(22, 27, 30, 0.85); backdrop-filter: blur(12px); border: 1px solid #00f2ff;">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-0 text-info">
+                        <i class="bi bi-search fs-5"></i>
+                    </span>
+                    <input type="text" id="buscadorAlumnos"
+                        class="form-control bg-transparent border-0 text-white shadow-none"
+                        placeholder="Buscar patinador por nombre..." onkeyup="filtrarAlumnos()"
+                        style="font-size: 1.1rem;">
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for alu in alumnos %}
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card h-100 tarjeta-patinador shadow-sm">
+                        <div class="card-body p-4 text-center">
+                            <div class="position-relative d-inline-block mb-3">
+                                {% if alu.foto and alu.foto != "" %}
+                                <img src="{{ alu.foto }}" class="rounded-circle shadow-sm border border-3 border-info"
+                                    style="width: 85px; height: 85px; object-fit: cover;">
+                                {% else %}
+                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center border border-3 border-info shadow-sm"
+                                    style="width: 85px; height: 85px; font-size: 1.6rem; font-weight: bold; color: white;">
+                                    {{ alu.nombre[:1].upper() }}
+                                </div>
+                                {% endif %}
+
+                                <form action="/actualizar_foto" method="POST" enctype="multipart/form-data"
+                                    class="position-absolute bottom-0 end-0">
+                                    <input type="hidden" name="id_alumno" value="{{ alu._id }}">
+                                    <label for="foto_{{ alu._id }}"
+                                        class="btn btn-info btn-sm rounded-circle p-1 shadow-sm"
+                                        style="cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                        <span>📸</span>
+                                    </label>
+                                    <input id="foto_{{ alu._id }}" type="file" name="nueva_foto" class="d-none"
+                                        accept="image/*" onchange="this.form.submit()">
+                                </form>
+                            </div>
+
+                            <div class="d-flex justify-content-center align-items-center mb-2 gap-2">
+                                <h6 class="text-white fw-bold text-uppercase small mb-0">{{ alu.nombre }}</h6>
+                                <button class="btn btn-sm btn-outline-info rounded-circle"
+                                    style="width: 25px; height: 25px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                    type="button" data-bs-toggle="collapse" data-bs-target="#ficha_{{ alu._id }}">
+                                    <i class="bi bi-info-lg"></i>
+                                </button>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="badge rounded-pill bg-{{ alu.color_pago }} px-3"
+                                    style="font-size: 0.7rem;">
+                                    {{ alu.estado_pago }}
+                                </span>
+                            </div>
+
+                            <div class="collapse mb-3" id="ficha_{{ alu._id }}">
+                                <div class="card card-body p-2 text-start shadow-inner"
+                                    style="background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; font-size: 0.8rem;">
+                                    <div
+                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+                                        <span class="text-muted"><i
+                                                class="bi bi-person-vcard text-info me-1"></i>Cédula:</span>
+                                        <span class="text-white fw-bold">{{ alu.cedula }}</span>
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+                                        <span class="text-muted"><i
+                                                class="bi bi-calendar-event text-info me-1"></i>Nació:</span>
+                                        <span class="text-white">{{ alu.fecha_nac or '---' }}</span>
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+                                        <span class="text-muted"><i
+                                                class="bi bi-droplet-fill text-danger me-1"></i>Sangre:</span>
+                                        <span class="badge bg-danger">{{ alu.sangre or '---' }}</span>
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+                                        <span class="text-muted"><i
+                                                class="bi bi-hospital text-success me-1"></i>EPS:</span>
+                                        <span class="text-white text-truncate" style="max-width: 100px;">{{ alu.eps or
+                                            '---' }}</span>
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-between align-items-center mt-2 border-top border-secondary pt-2">
+                                        <span class="text-muted small"><i
+                                                class="bi bi-star-fill text-warning me-1"></i>Nivel:</span>
+                                        <select
+                                            class="form-select form-select-sm bg-dark text-warning border-warning w-auto"
+                                            style="font-size: 0.75rem; padding: 2px 5px; cursor: pointer;"
+                                            onchange="actualizarNivel('{{ alu._id }}', this.value)">
+                                            <option value="Principiante" {% if alu.nivel_roller=='Principiante'
+                                                %}selected{% endif %}>Principiante</option>
+                                            <option value="Medio" {% if alu.nivel_roller=='Medio' %}selected{% endif %}>
+                                                Medio</option>
+                                            <option value="Avanzado" {% if alu.nivel_roller=='Avanzado' %}selected{%
+                                                endif %}>Avanzado</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-grid mt-3 border-top border-secondary pt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger border-0"
+                                            onclick="confirmarEliminar('{{ alu._id }}', '{{ alu.nombre }}')">
+                                            <i class="bi bi-trash3-fill me-1"></i> Eliminar Patinador
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="border-secondary opacity-25">
+
+                            <div class="d-grid gap-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-warning w-100 dropdown-toggle fw-bold"
+                                        type="button" data-bs-toggle="dropdown" data-bs-boundary="window">
+                                        💰 Cobrar
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Diario', 5000)">
+                                                <i class="bi bi-calendar-event me-2 text-info"></i>Pago Diario
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Semanal', 15000)">
+                                                <i class="bi bi-calendar-range me-2 text-warning"></i>Pago Semanal
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Mensual', 50000)">
+                                                <i class="bi bi-calendar-month me-2 text-success"></i>Pago Mensual
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider border-secondary">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-white fw-bold" href="javascript:void(0)"
+                                                onclick="abrirCobroManual('{{ alu._id }}', '{{ alu.nombre }}')">
+                                                <i class="bi bi-clock-history me-2 text-danger"></i>Pago de Fecha
+                                                Anterior
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <form action="/marcar_asistencia/{{ alu._id }}" method="POST">
+                                    <button type="submit" class="btn btn-sm btn-primary w-100 fw-bold">
+                                        <i class="bi bi-check-lg"></i> ASISTIÓ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row justify-content-center mt-5 mb-5">
+                <div class="col-md-10">
+                    <div class="card bg-dark border-warning shadow-lg">
+                        <div class="card-header border-warning text-warning">
+                            <h4 class="mb-0"><i class="bi bi-cash-stack"></i> Historial de cobros recientes</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover align-middle">
+                                    <thead class="table-warning text-dark">
+                                        <tr>
+                                            <th>Alumno</th>
+                                            <th>Tipo</th>
+                                            <th>Monto</th>
+                                            <th>Fecha de Pago</th>
+                                            <th>Vence</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for pago in pagos %}
+                                        <tr>
+                                            <td class="fw-bold">{{ pago.nombre_alumno }}</td>
+                                            <td><span class="badge border border-info text-info">{{ pago.tipo }}</span>
+                                            </td>
+                                            <td class="text-success fw-bold">${{ "{:,.0f}".format(pago.monto | int) }}
+                                            </td>
+                                            <td>{{ pago.fecha_pago }}</td>
+                                            <td class="text-warning">{{ pago.fecha_vencimiento }}</td>
+                                            <td>
+                                                <button type="button"
+                                                    class="btn btn-outline-danger btn-sm px-3 border-danger shadow-sm"
+                                                    onclick="confirmarEliminarPago('{{ url_for('eliminar_pago', id_pago=pago._id) }}', '{{ pago.nombre_alumno }}', '{{ pago.monto }}')">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-success mt-4">Conexión activa con el motor de Python.</div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalPatinadores" tabindex="-1" aria-labelledby="modalPatinadoresLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark border-info shadow-lg" style="border-radius: 15px;">
+                <div class="modal-header border-info">
+                    <h5 class="modal-title text-info fw-bold" id="modalPatinadoresLabel">
+                        <i class="bi bi-people-fill"></i> Patinadores del Entrenamiento
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white">
+                    <p class="text-muted small mb-3">Lista de asistencia para este día:</p>
+                    <div id="listaNombresModal" class="d-flex flex-column gap-2" style="font-size: 1.1rem;">
+                    </div>
+                </div>
+                <div class="modal-footer border-info">
+                    <button type="button" class="btn btn-outline-light rounded-pill"
+                        data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            // Hacemos el calendario global para actualizarlo tras eliminar un registro
+            window.miCalendario = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                themeSystem: 'bootstrap5',
+                events: '/obtener_eventos',
+
+                eventClick: function (info) {
+                    const listaAsistencias = info.event.extendedProps.lista_asistencias || [];
+                    const fecha = info.event.start.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                    let nombresHtml = '';
+                    if (listaAsistencias.length > 0) {
+                        listaAsistencias.forEach(asis => {
+                            nombresHtml += `
+                            <div class="p-2 border-bottom border-secondary d-flex justify-content-between align-items-center" id="fila_asis_${asis.id_asistencia}">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-check-fill text-success fs-5 me-2"></i>
+                                    <span class="fw-bold text-light me-2">${asis.nombre}</span>
+                                    <span class="badge bg-${asis.color} rounded-pill" style="font-size: 0.7rem;">${asis.estado}</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="borrarAsistencia('${asis.id_asistencia}')" title="Eliminar asistencia">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </div>`;
+                        });
+                    } else {
+                        nombresHtml = '<p class="text-muted">No hay detalles.</p>';
+                    }
+
+                    document.getElementById('modalPatinadoresLabel').innerHTML = `<i class="bi bi-calendar-check text-info"></i> ${fecha.toUpperCase()}`;
+                    document.getElementById('listaNombresModal').innerHTML = nombresHtml;
+
+                    // 🚀 SOLUCIÓN DEL LAG: getOrCreateInstance reutiliza la misma ventana, no colapsa la RAM
+                    var modalPatinadores = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPatinadores'));
+                    modalPatinadores.show();
+                },
+
+                eventMouseEnter: function (info) {
+                    info.el.style.cursor = 'pointer';
+                    info.el.style.transform = 'scale(1.02)';
+                    info.el.style.transition = 'all 0.2s';
+                    info.el.style.boxShadow = '0 4px 15px rgba(0, 242, 255, 0.4)';
+                },
+                eventMouseLeave: function (info) {
+                    info.el.style.transform = 'scale(1)';
+                    info.el.style.boxShadow = 'none';
+                }
+            });
+
+            window.miCalendario.render();
+        });
+
+        window.borrarAsistencia = function (id_asistencia) {
+            Swal.fire({
+                title: '¿Eliminar Asistencia?',
+                text: "Esta acción borrará el registro de este patinador para siempre.",
+                icon: 'warning',
+                background: '#1a1a1a',
+                color: '#ffffff',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#008b99',
+                confirmButtonText: '<i class="bi bi-trash3-fill"></i> Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                customClass: { popup: 'border border-danger shadow-lg' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/calendario_eliminar/' + id_asistencia, { method: 'POST' })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Fallo de conexión");
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                let fila = document.getElementById('fila_asis_' + id_asistencia);
+                                if (fila) {
+                                    fila.style.transition = "all 0.3s ease";
+                                    fila.style.opacity = "0";
+                                    setTimeout(() => fila.style.display = 'none', 300);
+                                }
+                                window.miCalendario.refetchEvents();
+                                Swal.fire({
+                                    title: '¡Eliminado!',
+                                    text: 'El alumno fue retirado de la clase.',
+                                    icon: 'success',
+                                    background: '#1a1a1a',
+                                    color: '#00f2ff',
+                                    confirmButtonColor: '#00f2ff',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire('Error', 'No se encontró el registro.', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire('Error de Conexión', 'Revisa tu servidor.', 'error');
+                        });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function filtrarAlumnos() {
+            let textoBusqueda = document.getElementById('buscadorAlumnos').value.toLowerCase();
+            let tarjetas = document.querySelectorAll('.tarjeta-patinador');
+
+            tarjetas.forEach(tarjeta => {
+                let nombre = tarjeta.querySelector('h6').innerText.toLowerCase();
+                let columnaPadre = tarjeta.parentElement;
+
+                if (nombre.includes(textoBusqueda)) {
+                    columnaPadre.style.display = "";
+                } else {
+                    columnaPadre.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function confirmarEliminar(id, nombre) {
+            Swal.fire({
+                title: '¿ELIMINAR A ' + nombre.toUpperCase() + '?',
+                text: "Esta acción es irreversible. Se borrarán sus datos y asistencias.",
+                icon: 'warning',
+                background: '#161b1e',
+                color: '#e0e0e0',
+                showCancelButton: true,
+                confirmButtonColor: '#ff4d4d',
+                cancelButtonColor: '#00f2ff',
+                confirmButtonText: '<i class="bi bi-trash3-fill"></i> SÍ, ELIMINAR',
+                cancelButtonText: 'CANCELAR',
+                customClass: { popup: 'alerta-neon-tech' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/eliminar/' + id, { method: 'POST' })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Error en la red");
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: '¡LOGRADO!',
+                                    text: data.mensaje,
+                                    icon: 'success',
+                                    background: '#161b1e',
+                                    color: '#00f2ff',
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                title: 'ERROR',
+                                text: 'No pudimos conectar con el servidor.',
+                                icon: 'error',
+                                background: '#161b1e',
+                                color: '#ff4d4d'
+                            });
+                        });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function abrirCobroManual(id_alumno, nombre) {
+            Swal.fire({
+                title: '<i class="bi bi-cash-coin text-info"></i> PAGO PERSONALIZADO',
+                html: `
+            <div class="text-start p-2" style="font-family: 'Segoe UI', sans-serif;">
+                <p class="text-muted mb-3 small">Registrar pago para: <b class="text-white">${nombre}</b></p>
+                
+                <label class="form-label text-info small fw-bold">FECHA DEL PAGO:</label>
+                <input type="date" id="fecha_manual" class="form-control bg-dark text-white border-secondary mb-3" 
+                       value="${new Date().toISOString().split('T')[0]}">
+                
+                <label class="form-label text-info small fw-bold">MONTO RECIBIDO ($):</label>
+                <input type="number" id="monto_manual" class="form-control bg-dark text-white border-secondary mb-3" 
+                       placeholder="Ej: 10000">
+                
+                <label class="form-label text-info small fw-bold">CONCEPTO:</label>
+                <select id="tipo_manual" class="form-select bg-dark text-white border-secondary">
+                    <option value="Clase">Pago de Clase</option>
+                    <option value="Semana">Pago de Semana</option>
+                    <option value="Abono">Abono a Deuda</option>
+                    <option value="Mensualidad">Mensualidad Full</option>
+                </select>
+            </div>
+        `,
+                background: '#161b1e',
+                color: '#ffffff',
+                showCancelButton: true,
+                confirmButtonText: 'GUARDAR PAGO',
+                confirmButtonColor: '#00f2ff',
+                cancelButtonText: 'CANCELAR',
+                customClass: { popup: 'alerta-neon-tech' },
+                preConfirm: () => {
+                    const fecha = document.getElementById('fecha_manual').value;
+                    const monto = document.getElementById('monto_manual').value;
+                    const tipo = document.getElementById('tipo_manual').value;
+
+                    if (!fecha || !monto) {
+                        Swal.showValidationMessage('¡Atención! Debes ingresar fecha y monto');
+                        return false;
+                    }
+                    return { id_alumno, fecha, monto, tipo };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/registrar_pago_manual', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(result.value)
+                    })
+                        .then(res => {
+                            if (!res.ok) throw new Error("Fallo en la respuesta del servidor");
+                            return res.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡SISTEMA ACTUALIZADO!',
+                                    text: 'El pago ha quedado registrado en el historial.',
+                                    background: '#161b1e',
+                                    color: '#00f2ff',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error en la conexión:", error);
+                            Swal.fire('Error de Comunicación', 'No pudimos contactar con el motor Python.', 'error');
+                        });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function cobroDinamico(id_alumno, nombre, tipo, monto_sugerido) {
+            Swal.fire({
+                title: `<i class="bi bi-wallet2 text-warning"></i> COBRO ${tipo.toUpperCase()}`,
+                html: `
+                <div class="text-start p-2" style="font-family: 'Segoe UI', sans-serif;">
+                    <p class="text-muted mb-3 small">Alumno: <b class="text-white">${nombre}</b></p>
+                    <label class="form-label text-warning small fw-bold">VALOR A COBRAR ($):</label>
+                    <input type="number" id="monto_dinamico"
+                           class="form-control bg-dark text-white border-warning fs-4 text-center fw-bold"
+                           value="${monto_sugerido}">
+                </div>
+            `,
+                background: '#161b1e',
+                color: '#ffffff',
+                showCancelButton: true,
+                confirmButtonText: '💰 CONFIRMAR PAGO',
+                confirmButtonColor: '#ffc107',
+                cancelButtonText: 'CANCELAR',
+                cancelButtonColor: '#6c757d',
+                customClass: { popup: 'border border-warning' },
+                preConfirm: () => {
+                    const montoFinal = document.getElementById('monto_dinamico').value;
+                    if (!montoFinal || montoFinal <= 0) {
+                        Swal.showValidationMessage('Ingresa un valor válido mayor a 0');
+                        return false;
+                    }
+                    return montoFinal;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const fechaHoy = new Date().toISOString().split('T')[0];
+                    fetch('/registrar_pago_manual', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id_alumno: id_alumno,
+                            monto: result.value,
+                            tipo: tipo,
+                            fecha: fechaHoy
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡PAGO REGISTRADO!',
+                                    text: `$${result.value} añadidos a la caja.`,
+                                    background: '#161b1e',
+                                    color: '#00f2ff',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => location.reload());
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error:", err);
+                            Swal.fire('Error', 'No se pudo conectar con el servidor', 'error');
+                        });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function confirmarEliminarPago(urlEliminar, nombre, monto) {
+            Swal.fire({
+                title: '<i class="bi bi-shield-fill-exclamation text-danger"></i> ¿ELIMINAR PAGO?',
+                html: `
+                    <div style="font-family: 'Segoe UI', sans-serif;">
+                        Estás a punto de borrar un pago de <b class="text-info">${nombre}</b>.<br>
+                        Monto registrado: <b class="text-warning fs-5">$${monto}</b><br><br>
+                        <span class="text-danger small fw-bold">¡Esto restará el dinero de la caja y no se puede deshacer!</span>
+                    </div>
+                `,
+                background: '#161b1e',
+                color: '#ffffff',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '🗑️ SÍ, BORRAR PAGO',
+                cancelButtonText: 'CANCELAR',
+                customClass: { popup: 'border border-danger shadow-lg' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = urlEliminar;
+                }
+            });
+        }
+
+
+        function actualizarNivel(id_alumno, nuevo_nivel) {
+    fetch('/actualizar_nivel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id_alumno, nivel: nuevo_nivel })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Notificación rápida para confirmar que se guardó
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Nivel: ' + nuevo_nivel,
+                showConfirmButton: false,
+                timer: 1500,
+                background: '#161b1e',
+                color: '#00f2ff'
+            });
+        }
+    });
+}
+    </script>
+</body>
+
+</html>

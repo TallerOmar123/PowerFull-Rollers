@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Historial - PowerFull Club</title>
+
+    <style>
+        /* 1. Fondo Dark Coherente */
+        body {
+            background-color: #0b0f11;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+
+        /* 2. Contenedores con el sello de 20px de curvatura */
+        .container,
+        .card {
+            background-color: #161b1e !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(0, 242, 255, 0.15) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            padding: 25px;
+        }
+
+        /* 3. Estilo de Tabla de Datos */
+        .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: #e0e0e0;
+            border-color: #333;
+            vertical-align: middle;
+        }
+
+        .table thead {
+            border-bottom: 2px solid #00f2ff;
+        }
+
+        /* 4. Acentos y Botones */
+        h1,
+        h2,
+        .text-info {
+            color: #00f2ff !important;
+        }
+
+        .btn-outline-info {
+            border-color: #00f2ff !important;
+            color: #00f2ff !important;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-outline-info:hover {
+            background-color: #00f2ff !important;
+            color: #000 !important;
+        }
+
+        /* 5. Badge de fecha estilo Neón */
+        .badge-date {
+            background: rgba(0, 242, 255, 0.1);
+            color: #00f2ff;
+            border: 1px solid #00f2ff;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-white p-4">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <script>
+            // Esperamos a que cargue la página para lanzar la magia
+            document.addEventListener('DOMContentLoaded', function() {
+                {% for category, message in messages %}
+                
+                // Si el mensaje es de eliminar (danger), brillará en rojo. Si es otro, en cian.
+                let colorNeón = '{{ category }}' === 'danger' ? '#dc3545' : '#00f2ff';
+                let icono = '{{ category }}' === 'danger' ? 'success' : 'success'; // Usamos el check verde de éxito
+                
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end', // Sale en la esquina superior derecha
+                    icon: icono,
+                    title: '<span style="font-family: \'Segoe UI\', sans-serif; font-size: 15px;">{{ message }}</span>',
+                    showConfirmButton: false,
+                    timer: 3500, // Desaparece en 3.5 segundos
+                    timerProgressBar: true,
+                    background: '#161b1e',
+                    color: '#ffffff',
+                    iconColor: colorNeón,
+                    customClass: {
+                        popup: 'shadow-lg border-0'
+                    },
+                    didOpen: (toast) => {
+                        // Le ponemos una barra lateral de color neón
+                        toast.style.borderLeft = `4px solid ${colorNeón}`;
+                    }
+                });
+
+                {% endfor %}
+            });
+        </script>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container border border-secondary rounded p-4 bg-secondary bg-opacity-10 shadow">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="display-5 text-info">📋 Historial de Asistencias</h1>
+            <a href="/" class="btn btn-outline-info btn-lg">⬅️ Volver al Inicio</a>
+        </div>
+
+        <hr class="bg-light">
+
+        <div class="table-responsive mt-4">
+            <table class="table table-dark table-hover table-striped border-secondary">
+                <thead class="table-active">
+                    <tr>
+                        <th class="text-info">Patinador</th>
+                        <th class="text-info">Fecha de Entrenamiento</th>
+                        <th class="text-info">Estado</th>
+                        <th class="text-info text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asis in asistencias %}
+                    <tr>
+                        <td class="fw-bold align-middle">{{ asis.nombre }}</td>
+                        <td class="align-middle">{{ asis.fecha }}</td>
+                        <td class="align-middle"><span class="badge bg-success">Presente</span></td>
+                        <td class="text-center">
+                            <form id="form-delete-{{ asis.id }}" action="/eliminar_asistencia/{{ asis.id }}"
+                                method="POST" style="display:inline;">
+                                <button type="button" class="btn btn-outline-danger btn-sm px-3"
+                                    onclick="confirmarEliminarAsistencia('{{ asis.id }}', '{{ asis.nombre }}', '{{ asis.fecha }}')">
+                                    <i class="bi bi-trash3"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+    <script>
+    function confirmarEliminarAsistencia(id, nombre, fecha) {
+        Swal.fire({
+            title: '<i class="bi bi-exclamation-triangle-fill text-danger"></i> ¿ELIMINAR ASISTENCIA?',
+            html: `Vas a borrar el registro de <b class="text-info">${nombre}</b><br>del día <b class="text-warning">${fecha}</b>.<br><br><span class="text-danger small fw-bold">¡Esta acción no se puede deshacer!</span>`,
+            background: '#161b1e',
+            color: '#ffffff',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545', // Rojo peligro
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '🗑️ SÍ, ELIMINAR',
+            cancelButtonText: 'CANCELAR',
+            customClass: { 
+                popup: 'border border-danger shadow-lg' 
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el profesor confirma, JavaScript le da "Enter" al formulario invisible
+                document.getElementById(`form-delete-${id}`).submit();
+            }
+        });
+    }
+</script>
+
+
+
+
+
+</body>
+
+</html>
