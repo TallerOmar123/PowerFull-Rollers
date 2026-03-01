@@ -119,6 +119,12 @@ def login():
 # En app.py
 @app.route('/')
 def home():
+    # 🔒 EL CANDADO (Agrégalo aquí mismo)
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+    
+    # --- De aquí para abajo es tu código que ya funciona ---
+    
     # 1. ESTA NO SE TOCA (Maneja los colores verde/rojo)
     alumnos_datos = logic.obtener_alumnos_con_estado_pago()
     
@@ -130,7 +136,7 @@ def home():
     
     return render_template('index.html', 
                            alumnos=alumnos_datos, 
-                           pagos=lista_pagos,  # <--- Enviamos la lista al HTML
+                           pagos=lista_pagos,
                            stats_profe=stats)
 
 
