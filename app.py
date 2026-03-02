@@ -95,19 +95,51 @@ def login():
         return "Contraseña incorrecta. <a href='/login'>Volver a intentar</a>"
     
     return '''
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #2c3e50, #3498db); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; width: 320px;">
-            <h1 style="color: #2c3e50; margin-bottom: 10px;">🛼 PowerFull</h1>
-            <p style="color: #7f8c8d; margin-bottom: 25px;">Panel de Gestión Académica</p>
+    <div style="
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        height: 100vh; 
+        width: 100%;
+        background: url('https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=1964&auto=format&fit=crop') no-repeat center center fixed; 
+        background-size: cover;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+    ">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1;"></div>
+
+        <div style="
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 60px; 
+            border-radius: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            text-align: center; 
+            width: 450px; 
+            border-top: 8px solid #3498db;
+            backdrop-filter: blur(10px);
+        ">
+            <div style="font-size: 60px; margin-bottom: 10px;">🛼</div>
+            <h1 style="color: #1a2a6c; margin-bottom: 5px; font-size: 2.5rem; font-weight: 800; letter-spacing: -1px;">POWERFULL</h1>
+            <p style="color: #555; margin-bottom: 40px; font-size: 1.1rem; font-weight: 400;">Panel de Control Administrativo</p>
+            
             <form method="post">
-                <input type="password" name="password" placeholder="Introduce la clave maestra" required 
-                       style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none;">
+                <div style="margin-bottom: 30px; text-align: left;">
+                    <label style="display: block; margin-bottom: 10px; color: #333; font-weight: 600; font-size: 0.9rem;">CONTRASEÑA MAESTRA</label>
+                    <input type="password" name="password" placeholder="••••••••" required 
+                           style="width: 100%; padding: 18px; border: 2px solid #ddd; border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.1rem; transition: 0.3s; background: #f9f9f9;">
+                </div>
+                
                 <button type="submit" 
-                        style="width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">
-                    Entrar al Sistema
+                        style="width: 100%; padding: 18px; background: linear-gradient(to right, #1a2a6c, #3498db); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3); transition: transform 0.2s;">
+                    ACCEDER AHORA
                 </button>
             </form>
-            <p style="margin-top: 20px; font-size: 12px; color: #bdc3c7;">Acceso exclusivo para instructores</p>
+            
+            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <p style="font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 1px;">Propiedad Privada - Academia PowerFull Rollers</p>
+            </div>
         </div>
     </div>
     '''
