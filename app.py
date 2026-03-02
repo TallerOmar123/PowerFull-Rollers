@@ -95,16 +95,29 @@ def login():
         return "Contraseña incorrecta. <a href='/login'>Volver a intentar</a>"
     
     return '''
-        <div style="text-align:center; margin-top:100px; font-family:Arial;">
-            <h2>🔐 Acceso Academia PowerFull Rollers</h2>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #2c3e50, #3498db); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; width: 320px;">
+            <h1 style="color: #2c3e50; margin-bottom: 10px;">🛼 PowerFull</h1>
+            <p style="color: #7f8c8d; margin-bottom: 25px;">Panel de Gestión Académica</p>
             <form method="post">
-                <input type="password" name="password" placeholder="Clave del Profesor" required style="padding:10px;">
-                <button type="submit" style="padding:10px; background:#3498db; color:white; border:none; cursor:pointer;">Entrar</button>
+                <input type="password" name="password" placeholder="Introduce la clave maestra" required 
+                       style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none;">
+                <button type="submit" 
+                        style="width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                    Entrar al Sistema
+                </button>
             </form>
+            <p style="margin-top: 20px; font-size: 12px; color: #bdc3c7;">Acceso exclusivo para instructores</p>
         </div>
+    </div>
     '''
 
 
+
+@app.route('/logout')
+def logout():
+    session.pop('admin', None)  # Esto "borra" el brazalete VIP
+    return redirect(url_for('login'))
 
 
 
