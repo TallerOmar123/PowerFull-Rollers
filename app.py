@@ -106,39 +106,40 @@ def login():
         font-family: 'Poppins', sans-serif;
         margin: 0;
     ">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.1); z-index: 1;"></div>
 
         <div style="
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 60px; 
-            border-radius: 25px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 80px; 
+            border-radius: 40px; 
+            /* Quitamos la sombra negra y ponemos un resplandor de luz */
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5); 
             text-align: center; 
-            width: 450px; 
-            border-top: 8px solid #3498db;
-            backdrop-filter: blur(10px);
+            width: 600px; 
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
         ">
-            <div style="font-size: 60px; margin-bottom: 10px;">🛼</div>
-            <h1 style="color: #1a2a6c; margin-bottom: 5px; font-size: 2.5rem; font-weight: 800; letter-spacing: -1px;">POWERFULL</h1>
-            <p style="color: #555; margin-bottom: 40px; font-size: 1.1rem; font-weight: 400;">Panel de Control Administrativo</p>
+            <div style="font-size: 80px; margin-bottom: 20px;">🛼</div>
+            <h1 style="color: #1a2a6c; margin-bottom: 10px; font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; line-height: 1;">POWERFULL</h1>
+            <p style="color: #333; margin-bottom: 50px; font-size: 1.4rem; font-weight: 500; text-transform: uppercase; letter-spacing: 2px;">Panel de Control Administrativo</p>
             
             <form method="post">
-                <div style="margin-bottom: 30px; text-align: left;">
-                    <label style="display: block; margin-bottom: 10px; color: #333; font-weight: 600; font-size: 0.9rem;">CONTRASEÑA MAESTRA</label>
+                <div style="margin-bottom: 35px; text-align: left;">
+                    <label style="display: block; margin-bottom: 15px; color: #1a2a6c; font-weight: 700; font-size: 1rem; padding-left: 5px;">CONTRASEÑA MAESTRA</label>
                     <input type="password" name="password" placeholder="••••••••" required 
-                           style="width: 100%; padding: 18px; border: 2px solid #ddd; border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.1rem; transition: 0.3s; background: #f9f9f9;">
+                           style="width: 100%; padding: 22px; border: 2px solid rgba(26, 42, 108, 0.2); border-radius: 15px; box-sizing: border-box; outline: none; font-size: 1.3rem; transition: 0.3s; background: rgba(255,255,255,0.8);">
                 </div>
                 
                 <button type="submit" 
-                        style="width: 100%; padding: 18px; background: linear-gradient(to right, #1a2a6c, #3498db); color: white; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3); transition: transform 0.2s;">
-                    ACCEDER AHORA
+                        style="width: 100%; padding: 22px; background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); color: white; border: none; border-radius: 15px; font-size: 1.4rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">
+                    ACCEDER AL SISTEMA
                 </button>
             </form>
             
-            <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                <p style="font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 1px;">Propiedad Privada - Academia PowerFull Rollers</p>
+            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.1);">
+                <p style="font-size: 0.9rem; color: #555; font-weight: 600;">🔒 SISTEMA DE SEGURIDAD ACTIVADO</p>
             </div>
         </div>
     </div>
