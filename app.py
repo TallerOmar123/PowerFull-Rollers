@@ -101,45 +101,46 @@ def login():
         align-items: center; 
         height: 100vh; 
         width: 100%;
-        background: url('https://images.unsplash.com/photo-1547447134-cd3f5c716030?q=80&w=1964&auto=format&fit=crop') no-repeat center center fixed; 
+        /* 🔗 NUEVA IMAGEN DE FONDO DE PATINES */
+        background: url('https://image.spreadshirtmedia.com/image-server/v1/mp/products/T1457A1MPA4459PT17X46Y46D195204482W10000H10000/views/1,width=800,height=800,appearanceId=1,backgroundColor=F2F2F2/pair-of-roller-skates-sticker.jpg') no-repeat center center fixed; 
         background-size: cover;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
+        color: #ffffff;
     ">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.1); z-index: 1;"></div>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1;"></div>
 
         <div style="
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.85); 
-            padding: 80px; 
-            border-radius: 40px; 
-            /* Quitamos la sombra negra y ponemos un resplandor de luz */
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5); 
+            background: rgba(0, 0, 0, 0.75); 
+            padding: 70px 60px; 
+            border-radius: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
             text-align: center; 
-            width: 600px; 
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(15px);
+            width: 500px; 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
         ">
-            <div style="font-size: 80px; margin-bottom: 20px;">🛼</div>
-            <h1 style="color: #1a2a6c; margin-bottom: 10px; font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; line-height: 1;">POWERFULL</h1>
-            <p style="color: #333; margin-bottom: 50px; font-size: 1.4rem; font-weight: 500; text-transform: uppercase; letter-spacing: 2px;">Panel de Control Administrativo</p>
+            <div style="font-size: 70px; margin-bottom: 15px;">🛼</div>
+            <h1 style="margin-bottom: 5px; font-size: 3.2rem; font-weight: 800; letter-spacing: 1px; color: #ffffff;">POWERFULL</h1>
+            <p style="color: #adb5bd; margin-bottom: 45px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 3px;">Panel Administrativo</p>
             
             <form method="post">
                 <div style="margin-bottom: 35px; text-align: left;">
-                    <label style="display: block; margin-bottom: 15px; color: #1a2a6c; font-weight: 700; font-size: 1rem; padding-left: 5px;">CONTRASEÑA MAESTRA</label>
+                    <label style="display: block; margin-bottom: 10px; color: #ced4da; font-weight: 600; font-size: 0.95rem; letter-spacing: 1px;">CLAVE DE ACCESO</label>
                     <input type="password" name="password" placeholder="••••••••" required 
-                           style="width: 100%; padding: 22px; border: 2px solid rgba(26, 42, 108, 0.2); border-radius: 15px; box-sizing: border-box; outline: none; font-size: 1.3rem; transition: 0.3s; background: rgba(255,255,255,0.8);">
+                           style="width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.3rem; color: #fff; background: rgba(0,0,0,0.4);">
                 </div>
                 
                 <button type="submit" 
-                        style="width: 100%; padding: 22px; background: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d); color: white; border: none; border-radius: 15px; font-size: 1.4rem; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">
-                    ACCEDER AL SISTEMA
+                        style="width: 100%; padding: 20px; background: #ffffff; color: #000000; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 800; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px;">
+                    INGRESAR AL SISTEMA
                 </button>
             </form>
             
-            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.1);">
-                <p style="font-size: 0.9rem; color: #555; font-weight: 600;">🔒 SISTEMA DE SEGURIDAD ACTIVADO</p>
+            <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <p style="font-size: 0.85rem; color: #6c757d; font-weight: 500; letter-spacing: 2px;">SISTEMA PRIVADO ENCRIPTADO 🔒</p>
             </div>
         </div>
     </div>
