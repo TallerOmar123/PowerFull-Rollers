@@ -101,26 +101,24 @@ def login():
         align-items: center; 
         height: 100vh; 
         width: 100%;
-        /* 🔗 NUEVA IMAGEN DE FONDO DE PATINES */
-        background: url('https://image.spreadshirtmedia.com/image-server/v1/mp/products/T1457A1MPA4459PT17X46Y46D195204482W10000H10000/views/1,width=800,height=800,appearanceId=1,backgroundColor=F2F2F2/pair-of-roller-skates-sticker.jpg') no-repeat center center fixed; 
+        /* 🔗 Imagen de patines reales con un filtro oscuro (Dark Mode) que combina con tu app */
+        background: linear-gradient(rgba(33, 37, 41, 0.85), rgba(17, 17, 17, 0.95)), url('https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed; 
         background-size: cover;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         color: #ffffff;
     ">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1;"></div>
-
         <div style="
             position: relative;
             z-index: 2;
-            background: rgba(0, 0, 0, 0.75); 
+            background: rgba(255, 255, 255, 0.03); 
             padding: 70px 60px; 
             border-radius: 25px; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
             text-align: center; 
             width: 500px; 
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         ">
             <div style="font-size: 70px; margin-bottom: 15px;">🛼</div>
             <h1 style="margin-bottom: 5px; font-size: 3.2rem; font-weight: 800; letter-spacing: 1px; color: #ffffff;">POWERFULL</h1>
@@ -130,17 +128,17 @@ def login():
                 <div style="margin-bottom: 35px; text-align: left;">
                     <label style="display: block; margin-bottom: 10px; color: #ced4da; font-weight: 600; font-size: 0.95rem; letter-spacing: 1px;">CLAVE DE ACCESO</label>
                     <input type="password" name="password" placeholder="••••••••" required 
-                           style="width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.3rem; color: #fff; background: rgba(0,0,0,0.4);">
+                           style="width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.3rem; color: #fff; background: rgba(0,0,0,0.4); transition: border 0.3s;">
                 </div>
                 
                 <button type="submit" 
-                        style="width: 100%; padding: 20px; background: #ffffff; color: #000000; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 800; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px;">
+                        style="width: 100%; padding: 20px; background: #3498db; color: #ffffff; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 800; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);">
                     INGRESAR AL SISTEMA
                 </button>
             </form>
             
             <div style="margin-top: 40px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05);">
-                <p style="font-size: 0.85rem; color: #6c757d; font-weight: 500; letter-spacing: 2px;">SISTEMA PRIVADO ENCRIPTADO 🔒</p>
+                <p style="font-size: 0.85rem; color: #6c757d; font-weight: 500; letter-spacing: 2px;">SISTEMA PRIVADO SEGURO 🔒</p>
             </div>
         </div>
     </div>
