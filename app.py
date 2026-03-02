@@ -87,6 +87,10 @@ CLAVE_PROFESOR = "Codigo777-profesor"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # 🧠 EL TOQUE INTELIGENTE: Si ya está logueado, mandarlo directo al panel
+    if session.get('admin'):
+        return redirect(url_for('home'))
+    
     if request.method == 'POST':
         password_ingresada = request.form.get('password')
         if password_ingresada == CLAVE_PROFESOR:
