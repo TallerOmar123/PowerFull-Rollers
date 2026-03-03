@@ -105,8 +105,8 @@ def login():
         align-items: center; 
         height: 100vh; 
         width: 100%;
-        /* 🔗 Imagen de patines reales con un filtro oscuro (Dark Mode) que combina con tu app */
-        background: linear-gradient(rgba(33, 37, 41, 0.85), rgba(17, 17, 17, 0.95)), url('https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed; 
+        /* 📸 TU FOTO REAL DE FONDO CON FILTRO OSCURO */
+        background: linear-gradient(rgba(33, 37, 41, 0.75), rgba(17, 17, 17, 0.95)), url('/static/fondo.jpeg') no-repeat center center fixed; 
         background-size: cover;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -124,8 +124,10 @@ def login():
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(15px);
         ">
-            <div style="font-size: 70px; margin-bottom: 15px;">🛼</div>
-            <h1 style="margin-bottom: 5px; font-size: 3.2rem; font-weight: 800; letter-spacing: 1px; color: #ffffff;">POWERFULL</h1>
+            <div style="margin-bottom: 20px;">
+                <img src="/static/logo.PNG" alt="PowerFull Logo" style="max-width: 150px; height: auto; drop-shadow: 0px 5px 15px rgba(0,0,0,0.5);">
+            </div>
+            
             <p style="color: #adb5bd; margin-bottom: 45px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 3px;">Panel Administrativo</p>
             
             <form method="post">
