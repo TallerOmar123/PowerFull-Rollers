@@ -426,18 +426,7 @@ def crear_ruta():
     return redirect(url_for('rutas'))
 
 
-@app.route('/eliminar_ruta/<id_ruta>', methods=['POST'])
-def eliminar_ruta(id_ruta):
-    # 🔒 SEGURIDAD: Evita que borren rutas sin permiso
-    if not session.get('admin'):
-        return redirect(url_for('login'))
 
-    if logic.borrar_ruta(id_ruta):
-        flash("🗑️ Ruta eliminada", "info")
-    else:
-        flash("❌ No se pudo eliminar la ruta", "danger")
-    
-    return redirect(url_for('rutas'))
 
 
 
