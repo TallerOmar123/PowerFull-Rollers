@@ -499,6 +499,11 @@ def marcar_ruta(id_ruta):
                            id_ruta=id_ruta)
 
 
+
+
+
+
+
 # 2. ESTA FUNCIÓN NUEVA ATRAPA EL BOTÓN "GUARDAR ASISTENCIA"
 @app.route('/guardar_asistencia_ruta/<id_ruta>', methods=['POST'])
 def guardar_asistencia_ruta(id_ruta):
@@ -529,23 +534,6 @@ def guardar_asistencia_ruta(id_ruta):
 
 
 
-#   REGISTRO MASIVO DE ASISTENTES   #
-#Este bloque de código funciona como el notario de la ruta. Se encarga de recibir la lista 
-# de todos los alumnos que seleccionaste, busca la ruta específica en la base de datos y 
-# guarda permanentemente esos nombres dentro de ella, confirmando con un mensaje que la 
-# asistencia ha sido registrada con éxito.
-@app.route('/guardar_asistencia_ruta/<id_ruta>', methods=['POST'])
-def guardar_asistencia_ruta(id_ruta):
-    # Recibimos la lista de IDs de alumnos seleccionados
-    asistentes_ids = request.form.getlist('asistentes')
-    
-    # Actualizamos la ruta en la base de datos
-    logic.db.rutas.update_one(
-        {"_id": logic.ObjectId(id_ruta)},
-        {"$set": {"asistentes": asistentes_ids}}
-    )
-    flash("✅ Asistencia de la ruta actualizada", "success")
-    return redirect(url_for('rutas'))
 
 
 
