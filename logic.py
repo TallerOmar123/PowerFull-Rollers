@@ -745,3 +745,55 @@ def eliminar_alumno_total(id_alumno):
     except Exception as e:
         print(f"❌ Error al eliminar alumno: {e}")
         return False
+    
+
+
+
+
+    # ==========================================================
+# ASISTENCIA A RUTAS URBANAS
+# ==========================================================
+
+def obtener_ruta_por_id(id_ruta):
+    """Busca una ruta específica para poder ver sus detalles."""
+    try:
+        ruta = db.rutas.find_one({"_id": ObjectId(id_ruta)})
+        if ruta:
+            ruta["id"] = str(ruta["_id"])
+        return ruta
+    except Exception as e:
+        print(f"❌ Error al buscar ruta: {e}")
+        return None
+
+
+
+
+
+def obtener_nombres_alumnos():
+    """Trae solo los nombres y IDs de los alumnos para la lista de asistencia."""
+    try:
+        # Traemos todos los alumnos ordenados alfabéticamente
+        alumnos = list(db.alumnos.find().sort("nombre", 1))
+        for alu in alumnos:
+            alu["id"] = str(alu["_id"])
+        return alumnos
+    except Exception as e:
+        print(f"❌ Error al obtener lista de alumnos: {e}")
+        return []
+    
+
+
+
+    
+
+def actualizar_asistentes_ruta(id_ruta, lista_asistentes):
+    """Guarda la lista de alumnos que fueron a la ruta."""
+    try:
+        db.rutas.update_one(
+            {"_id": ObjectId(id_ruta)},
+            {"$set": {"asistentes": lista_asistentes}}
+        )
+        return True
+    except Exception as e:
+        print(f"❌ Error al guardar asistentes en la ruta: {e}")
+        return False

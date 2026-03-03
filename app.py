@@ -411,6 +411,10 @@ def eliminar_pago(id_pago):
 # todos sepan hacia dónde patinarán.
 @app.route('/crear_ruta', methods=['POST'])
 def crear_ruta():
+    # 🔒 SEGURIDAD: Si no está logueado, lo mandamos al login
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
     nombre = request.form.get('nombre_ruta')
     fecha = request.form.get('fecha_ruta')
     
@@ -418,6 +422,20 @@ def crear_ruta():
         flash(f"🗺️ Ruta '{nombre}' creada con éxito", "success")
     else:
         flash("❌ Error al crear la ruta", "danger")
+    
+    return redirect(url_for('rutas'))
+
+
+@app.route('/eliminar_ruta/<id_ruta>', methods=['POST'])
+def eliminar_ruta(id_ruta):
+    # 🔒 SEGURIDAD: Evita que borren rutas sin permiso
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
+    if logic.borrar_ruta(id_ruta):
+        flash("🗑️ Ruta eliminada", "info")
+    else:
+        flash("❌ No se pudo eliminar la ruta", "danger")
     
     return redirect(url_for('rutas'))
 
@@ -430,6 +448,10 @@ def crear_ruta():
 # de "rutas" para que los usuarios puedan consultar los próximos destinos del club.
 @app.route('/rutas')
 def rutas():
+    # 🔒 SEGURIDAD: Nadie puede VER esta página sin haber puesto la clave
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+        
     # Le pedimos a logic que nos traiga la lista
     lista_de_rutas = logic.obtener_rutas()
     # Se la pasamos al HTML
@@ -445,6 +467,10 @@ def rutas():
 # la programación.
 @app.route('/eliminar_ruta/<id_ruta>', methods=['POST'])
 def eliminar_ruta(id_ruta):
+    # 🔒 SEGURIDAD: Evita que borren rutas sin permiso
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
     if logic.borrar_ruta(id_ruta):
         flash("🗑️ Ruta eliminada", "info")
     else:
@@ -462,17 +488,51 @@ def eliminar_ruta(id_ruta):
 # información clave: los detalles de una ruta específica y la lista completa de alumnos ordenada 
 # alfabéticamente; luego, envía todo esto a una pantalla especial para que puedas seleccionar 
 # quiénes asistieron a ese recorrido.
+# 1. ESTA FUNCIÓN SOLO ABRE LA PANTALLA
 @app.route('/marcar_ruta/<id_ruta>')
 def marcar_ruta(id_ruta):
-    # 1. Buscamos los datos de la ruta específica
+    # 🔒 SEGURIDAD
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
+    # Buscamos los datos de la ruta específica
     ruta = logic.db.rutas.find_one({"_id": logic.ObjectId(id_ruta)})
-    # 2. Buscamos a todos los alumnos para mostrarlos en la lista
+    # Buscamos a todos los alumnos
     todos_los_alumnos = list(logic.db.alumnos.find().sort("nombre", 1))
     
+    # Prevenimos un error si la ruta es nueva y no tiene la lista "asistentes" creada
+    if ruta and "asistentes" not in ruta:
+        ruta["asistentes"] = []
+        
     return render_template('marcar_asistencia_ruta.html', 
                            ruta=ruta, 
                            alumnos=todos_los_alumnos,
                            id_ruta=id_ruta)
+
+
+# 2. ESTA FUNCIÓN NUEVA ATRAPA EL BOTÓN "GUARDAR ASISTENCIA"
+@app.route('/guardar_asistencia_ruta/<id_ruta>', methods=['POST'])
+def guardar_asistencia_ruta(id_ruta):
+    # 🔒 SEGURIDAD
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
+    # Atrapamos todos los checkboxes (los alumnos marcados)
+    asistentes_seleccionados = request.form.getlist('asistentes')
+    
+    try:
+        # Actualizamos la base de datos reemplazando la lista vieja por la nueva
+        logic.db.rutas.update_one(
+            {"_id": logic.ObjectId(id_ruta)},
+            {"$set": {"asistentes": asistentes_seleccionados}}
+        )
+        flash('¡Asistencia de la ruta guardada con éxito! ✅', 'success')
+    except Exception as e:
+        flash('Error al guardar la asistencia ❌', 'danger')
+        print(f"Error al guardar asistencia de ruta: {e}")
+        
+    # Devolvemos al profesor a la tabla principal de rutas
+    return redirect(url_for('rutas'))
 
 
 

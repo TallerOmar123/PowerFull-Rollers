@@ -115,8 +115,12 @@
                             placeholder="Ej: Ruta Nocturna al Centro" required>
                     </div>
                     <div class="col-md-4">
-                        <input type="date" name="fecha_ruta" class="form-control bg-dark text-white border-secondary"
-                            required>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-info">
+                                <i class="bi bi-calendar-event"></i>
+                            </span>
+                            <input type="date" name="fecha_ruta" class="form-control bg-dark text-white border-secondary" required style="color-scheme: dark; cursor: pointer;">
+                        </div>
                     </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-success w-100"><i class="bi bi-plus-lg"></i> Crear Ruta</button>
