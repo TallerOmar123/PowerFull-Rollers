@@ -105,8 +105,8 @@ def login():
         align-items: center; 
         height: 100vh; 
         width: 100%;
-        /* 📸 TU FOTO REAL DE FONDO CON FILTRO OSCURO */
-        background: linear-gradient(rgba(33, 37, 41, 0.75), rgba(17, 17, 17, 0.95)), url('/static/fondo.jpeg') no-repeat center center fixed; 
+        /* 📸 TU FOTO REAL DE FONDO */
+        background: linear-gradient(rgba(33, 37, 41, 0.75), rgba(17, 17, 17, 0.95)), url('/static/fondo.jpg') no-repeat center center fixed; 
         background-size: cover;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -125,7 +125,7 @@ def login():
             backdrop-filter: blur(15px);
         ">
             <div style="margin-bottom: 20px;">
-                <img src="/static/logo.PNG" alt="PowerFull Logo" style="max-width: 150px; height: auto; drop-shadow: 0px 5px 15px rgba(0,0,0,0.5);">
+                <img src="/static/logo.PNG" onerror="this.onerror=null; this.src='/static/logo.png';" alt="PowerFull Logo" style="max-width: 150px; height: auto; drop-shadow: 0px 5px 15px rgba(0,0,0,0.5);">
             </div>
             
             <p style="color: #adb5bd; margin-bottom: 45px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 3px;">Panel Administrativo</p>
