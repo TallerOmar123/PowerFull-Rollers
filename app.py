@@ -105,8 +105,8 @@ def login():
         align-items: center; 
         height: 100vh; 
         width: 100%;
-        /* 📸 FILTRO SUAVE: Mucho más iluminado (20% arriba, 40% abajo) */
-        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('/static/fondo.jpeg') no-repeat center center fixed; 
+        /* 📸 VOLVEMOS AL FILTRO ORIGINAL (75% - 95% de oscuridad) */
+        background: linear-gradient(rgba(33, 37, 41, 0.75), rgba(17, 17, 17, 0.95)), url('/static/fondo.jpeg') no-repeat center center fixed; 
         background-size: cover;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -115,15 +115,14 @@ def login():
         <div style="
             position: relative;
             z-index: 2;
-            /* Le damos un toquecito más oscuro solo al cristal para que el texto resalte sobre el fondo claro */
-            background: rgba(0, 0, 0, 0.4); 
+            background: rgba(255, 255, 255, 0.03); 
             padding: 70px 60px; 
             border-radius: 25px; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
             text-align: center; 
             width: 500px; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
         ">
             <div style="margin-bottom: 20px;">
                 <img src="/static/logo.PNG" alt="PowerFull Logo" style="max-width: 150px; height: auto; drop-shadow: 0px 5px 15px rgba(0,0,0,0.5);">
@@ -135,7 +134,7 @@ def login():
                 <div style="margin-bottom: 35px; text-align: left;">
                     <label style="display: block; margin-bottom: 10px; color: #ced4da; font-weight: 600; font-size: 0.95rem; letter-spacing: 1px;">CLAVE DE ACCESO</label>
                     <input type="password" name="password" placeholder="••••••••" required 
-                           style="width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.3rem; color: #fff; background: rgba(0,0,0,0.5); transition: border 0.3s;">
+                           style="width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; box-sizing: border-box; outline: none; font-size: 1.3rem; color: #fff; background: rgba(0,0,0,0.4); transition: border 0.3s;">
                 </div>
                 
                 <button type="submit" 
