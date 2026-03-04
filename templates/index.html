@@ -554,13 +554,6 @@ comportamiento de los buscadores. -->
                                 </button>
                             </div>
 
-                            <div class="mb-3">
-                                <span class="badge rounded-pill bg-{{ alu.color_pago }} px-3"
-                                    style="font-size: 0.7rem;">
-                                    {{ alu.estado_pago }}
-                                </span>
-                            </div>
-
                             <div class="collapse mb-3" id="ficha_{{ alu._id }}">
 
                                 <div class="card card-body p-2 text-start shadow-inner"
@@ -630,7 +623,7 @@ comportamiento de los buscadores. -->
                                     </div>
                                 </div>
 
-                            </div> ```
+                            </div>
 
                             <hr class="border-secondary opacity-25">
 
@@ -701,12 +694,13 @@ comportamiento de los buscadores. -->
                                 <table class="table table-dark table-hover align-middle">
                                     <thead class="table-warning text-dark">
                                         <tr>
-                                            <th>Alumno</th>
-                                            <th>Tipo</th>
-                                            <th>Monto</th>
-                                            <th>Fecha de Pago</th>
-                                            <th>Vence</th>
-                                            <th></th>
+                                            <div class="container mt-5">
+                                                <th>Alumno</th>
+                                                <th>Tipo</th>
+                                                <th>Monto</th>
+                                                <th>Fecha de Pago</th>
+                                                <th>Vence</th>
+                                                <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
