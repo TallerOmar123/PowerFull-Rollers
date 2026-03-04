@@ -221,7 +221,8 @@ comportamiento de los buscadores. -->
                     color: #ff6b6b;
                     border: 1px solid rgba(231, 76, 60, 0.3);
                     padding: 10px 22px;
-                    border-radius: 50px; /* Forma de píldora moderna */
+                    border-radius: 50px;
+                    /* Forma de píldora moderna */
                     font-family: 'Segoe UI', sans-serif;
                     font-size: 0.95rem;
                     font-weight: 600;
@@ -229,17 +230,21 @@ comportamiento de los buscadores. -->
                     transition: all 0.3s ease;
                     backdrop-filter: blur(5px);
                 }
+
                 .btn-logout-pro:hover {
                     background: #e74c3c;
                     color: #ffffff;
                     border-color: #e74c3c;
-                    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6); /* Resplandor neón */
-                    transform: translateY(-2px); /* Efecto de flotar */
+                    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
+                    /* Resplandor neón */
+                    transform: translateY(-2px);
+                    /* Efecto de flotar */
                 }
             </style>
-            
+
             <a href="{{ url_for('logout') }}" class="btn-logout-pro">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                     <polyline points="16 17 21 12 16 7"></polyline>
                     <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -249,16 +254,52 @@ comportamiento de los buscadores. -->
         </div>
 
         <div style="margin-bottom: 20px;">
-            <img src="{{ url_for('static', filename='logo.PNG') }}" alt="Logo PowerFull Rollers" style="max-width: 300px; height: auto; drop-shadow: 0px 10px 15px rgba(0,0,0,0.5);">
+            <img src="{{ url_for('static', filename='logo.PNG') }}" alt="Logo PowerFull Rollers"
+                style="max-width: 300px; height: auto; drop-shadow: 0px 10px 15px rgba(0,0,0,0.5);">
         </div>
         <hr class="bg-light">
         <p class="lead">Gestor de Alumnos - Profesor: David</p>
 
         <div class="text-center my-4">
-            <a href="/historial" class="btn btn-outline-info px-4">
-                <i class="bi bi-clock-history"></i> Ver Historial
+            <style>
+                .btn-neon-historial {
+                    background: rgba(0, 242, 255, 0.05);
+                    border: 1px solid rgba(0, 242, 255, 0.4);
+                    color: #00f2ff;
+                    padding: 15px 40px;
+                    font-size: 1.2rem;
+                    font-weight: 800;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    border-radius: 50px;
+                    transition: all 0.3s ease;
+                    text-decoration: none;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 12px;
+                    box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+                    backdrop-filter: blur(5px);
+                }
+
+                .btn-neon-historial:hover {
+                    background: rgba(0, 242, 255, 0.15);
+                    color: #ffffff;
+                    border-color: #00f2ff;
+                    box-shadow: 0 0 25px rgba(0, 242, 255, 0.6), inset 0 0 10px rgba(0, 242, 255, 0.2);
+                    transform: translateY(-4px);
+                }
+
+                .btn-neon-historial i {
+                    font-size: 1.5rem;
+                }
+            </style>
+
+            <a href="/historial" class="btn-neon-historial">
+                <i class="bi bi-clock-history"></i> Consultar Historial <i class="bi bi-arrow-right-short"
+                    style="font-size: 1.8rem; margin-left: -5px;"></i>
             </a>
         </div>
+        ```
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-11">
@@ -344,6 +385,7 @@ comportamiento de los buscadores. -->
                     box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
                     backdrop-filter: blur(5px);
                 }
+
                 .btn-neon-rutas:hover {
                     background: rgba(0, 242, 255, 0.15);
                     color: #ffffff;
@@ -351,13 +393,15 @@ comportamiento de los buscadores. -->
                     box-shadow: 0 0 25px rgba(0, 242, 255, 0.6), inset 0 0 10px rgba(0, 242, 255, 0.2);
                     transform: translateY(-4px);
                 }
+
                 .btn-neon-rutas i {
                     font-size: 1.5rem;
                 }
             </style>
-            
+
             <a href="/rutas" class="btn-neon-rutas">
-                <i class="bi bi-geo-alt-fill"></i> Explorar Rutas Urbanas <i class="bi bi-arrow-right-short" style="font-size: 1.8rem; margin-left: -5px;"></i>
+                <i class="bi bi-geo-alt-fill"></i> Explorar Rutas Urbanas <i class="bi bi-arrow-right-short"
+                    style="font-size: 1.8rem; margin-left: -5px;"></i>
             </a>
         </div>
         ```
@@ -1032,28 +1076,28 @@ comportamiento de los buscadores. -->
 
 
         function actualizarNivel(id_alumno, nuevo_nivel) {
-    fetch('/actualizar_nivel', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: id_alumno, nivel: nuevo_nivel })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            // Notificación rápida para confirmar que se guardó
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Nivel: ' + nuevo_nivel,
-                showConfirmButton: false,
-                timer: 1500,
-                background: '#161b1e',
-                color: '#00f2ff'
-            });
+            fetch('/actualizar_nivel', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id_alumno, nivel: nuevo_nivel })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Notificación rápida para confirmar que se guardó
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Nivel: ' + nuevo_nivel,
+                            showConfirmButton: false,
+                            timer: 1500,
+                            background: '#161b1e',
+                            color: '#00f2ff'
+                        });
+                    }
+                });
         }
-    });
-}
     </script>
 </body>
 
