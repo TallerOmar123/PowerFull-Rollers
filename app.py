@@ -223,43 +223,42 @@ def home():
 #la capa de lógica antes de redirigir al usuario a la vista principal.
 @app.route('/registrar', methods=['POST'])
 def registrar():
-    # 1. Recolectamos los datos de texto (Igual que antes, pero 'foto' empieza vacío)
+    # 1. Recolectamos TODOS los datos (¡Ahora sí incluimos los nuevos!)
     datos = {
         "nombre": request.form.get('nombre'),
         "cedula": request.form.get('cedula'),
         "whatsapp": request.form.get('whatsapp'),
         "fecha_nac": request.form.get('fecha_nac'),
+        "talla_patin": request.form.get('talla_patin'),       # 🔥 CABLE CONECTADO
+        "zona_residencia": request.form.get('zona_residencia'), # 🔥 CABLE CONECTADO
+        "nivel_roller": request.form.get('nivel_roller'),       # 🔥 CABLE CONECTADO
         "sangre": request.form.get('sangre'),
         "eps": request.form.get('eps'),
         "emergencia_nombre": request.form.get('emergencia_nombre'),
         "parentesco": request.form.get('parentesco'),
         "emergencia_tel": request.form.get('emergencia_tel'),
-        "foto": "" # Se llenará con la respuesta de Cloudinary
+        "foto": "" 
     }
 
-    # 2. CAPTURAMOS EL ARCHIVO (Cámara o Galería)
-    # Buscamos en 'request.files' en lugar de 'request.form'
+    # 2. CAPTURAMOS EL ARCHIVO DE IMAGEN
     archivo_foto = request.files.get('foto')
 
     if archivo_foto and archivo_foto.filename != '':
         try:
-            # Subimos el archivo directamente a Cloudinary usando tu configuración
+            # Subida segura y simple a Cloudinary
             resultado = cloudinary.uploader.upload(
                 archivo_foto,
-                folder="rollers_powerfull", # Carpeta organizada en tu nube
-                public_id=f"perfil_{datos['cedula']}" # Nombre único usando la cédula
+                folder="rollers_powerfull" 
             )
-            # Guardamos la URL segura en el sobre de datos
             datos["foto"] = resultado.get('secure_url')
             print(f"✅ Foto de {datos['nombre']} subida exitosamente.")
         except Exception as e:
-            print(f"❌ Error al subir a Cloudinary: {e}")
-            # Si falla, el alumno se guarda sin foto (no se rompe la app)
+            print(f"❌ Error CRÍTICO en Cloudinary: {e}")
 
-    # 3. Mandamos el diccionario completo a la lógica (Tu código original)
+    # 3. Mandamos a la Base de Datos
     if datos["nombre"]:
         logic.guardar_alumno(datos) 
-        flash("✅ ¡Patinador y foto guardados con éxito!", "success") 
+        flash("✅ ¡Patinador guardado con éxito!", "success") 
     
     return redirect(url_for('home'))
 
@@ -570,22 +569,20 @@ def actualizar_foto():
     id_alumno = request.form.get('id_alumno')
     archivo = request.files.get('nueva_foto')
     
-    # Imprimimos para ver si el cambio en el HTML funcionó
-    print(f"🕵️‍♂️ VALIDACIÓN FINAL: ID recibido = '{id_alumno}'")
+    print(f"🕵️‍♂️ Intentando actualizar foto. ID: '{id_alumno}'")
 
-    if archivo and id_alumno and id_alumno.strip() != "":
+    if archivo and archivo.filename != '' and id_alumno:
         try:
             res = cloudinary.uploader.upload(archivo, folder="rollers_powerfull")
             nueva_url = res.get('secure_url')
             
-            # Mandamos el ID limpio a la lógica
             logic.actualizar_foto_db(id_alumno.strip(), nueva_url)
-            flash("📸 ¡Foto actualizada!", "success")
+            flash("📸 ¡Foto actualizada con éxito!", "success")
         except Exception as e:
-            print(f"❌ Error: {e}")
-            flash("Error al subir", "danger")
+            print(f"❌ Error CRÍTICO en Cloudinary: {e}")
+            flash("Error al subir la foto a la nube", "danger")
     else:
-        print("⚠️ SIGUE LLEGANDO VACÍO. Revisa el nombre de la variable en el loop del HTML.")
+        flash("⚠️ No seleccionaste ninguna imagen", "warning")
             
     return redirect(url_for('home'))
 

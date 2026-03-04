@@ -683,19 +683,19 @@ comportamiento de los buscadores. -->
                                     <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Diario', 5000)">
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Diario', 5000, '{{ alu.whatsapp }}')">
                                                 <i class="bi bi-calendar-event me-2 text-info"></i>Pago Diario
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Semanal', 15000)">
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Semanal', 15000, '{{ alu.whatsapp }}')">
                                                 <i class="bi bi-calendar-range me-2 text-warning"></i>Pago Semanal
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Mensual', 50000)">
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Mensual', 50000, '{{ alu.whatsapp }}')">
                                                 <i class="bi bi-calendar-month me-2 text-success"></i>Pago Mensual
                                             </a>
                                         </li>
