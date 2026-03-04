@@ -478,23 +478,42 @@ comportamiento de los buscadores. -->
         </div>
 
         <div class="container mt-5">
-            <div class="seccion-titulo">
-                <h3 class="text-white fw-bold">📋 Panel de Control de Patinadores</h3>
-                <p class="text-muted small">Gestión rápida: Cobros por Semana, Diario y Asistencia</p>
-            </div>
+    <div class="seccion-titulo">
+        <h3 class="text-white fw-bold">📋 Panel de Control de Patinadores</h3>
+        <p class="text-muted small">Gestión rápida: Cobros por Semana, Diario y Asistencia</p>
+    </div>
 
-            <div class="position-sticky shadow-lg p-2 mb-4 rounded-pill"
-                style="top: 15px; z-index: 1050; background: rgba(22, 27, 30, 0.85); backdrop-filter: blur(12px); border: 1px solid #00f2ff;">
-                <div class="input-group">
-                    <span class="input-group-text bg-transparent border-0 text-info">
-                        <i class="bi bi-search fs-5"></i>
-                    </span>
-                    <input type="text" id="buscadorAlumnos"
-                        class="form-control bg-transparent border-0 text-white shadow-none"
-                        placeholder="Buscar patinador por nombre..." onkeyup="filtrarAlumnos()"
-                        style="font-size: 1.1rem;">
-                </div>
-            </div>
+    {% if cumpleañeros %}
+    <div class="alert alert-info border-0 shadow-sm mb-4" 
+         style="background: rgba(0, 242, 255, 0.1); border-left: 5px solid #00f2ff !important; border-radius: 15px; animation: pulse 2s infinite;">
+        <h5 class="text-info fw-bold mb-2">
+            <i class="bi bi-balloon-heart-fill"></i> ¡Próximos Cumpleaños! (10 días)
+        </h5>
+        <div class="d-flex flex-wrap gap-2">
+            {% for alu in cumpleañeros %}
+            <span class="badge bg-dark border border-info p-2" style="font-size: 0.9rem; letter-spacing: 0.5px;">
+                🎂 {{ alu.nombre }} - 
+                <span class="text-info font-monospace">
+                    {% if alu.dias_cumple == 0 %} ¡HOY! 🥳 {% else %} en {{ alu.dias_cumple }} días {% endif %}
+                </span>
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="position-sticky shadow-lg p-2 mb-4 rounded-pill"
+        style="top: 15px; z-index: 1050; background: rgba(22, 27, 30, 0.85); backdrop-filter: blur(12px); border: 1px solid #00f2ff;">
+        <div class="input-group">
+            <span class="input-group-text bg-transparent border-0 text-info">
+                <i class="bi bi-search fs-5"></i>
+            </span>
+            <input type="text" id="buscadorAlumnos"
+                class="form-control bg-transparent border-0 text-white shadow-none"
+                placeholder="Buscar patinador por nombre..." onkeyup="filtrarAlumnos()"
+                style="font-size: 1.1rem;">
+        </div>
+    </div>
 
             <div class="row g-4">
                 {% for alu in alumnos %}
@@ -541,58 +560,53 @@ comportamiento de los buscadores. -->
                                 </span>
                             </div>
 
-                            <div class="collapse mb-3" id="ficha_{{ alu._id }}">
-                                <div class="card card-body p-2 text-start shadow-inner"
-                                    style="background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; font-size: 0.8rem;">
-                                    <div
-                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
-                                        <span class="text-muted"><i
-                                                class="bi bi-person-vcard text-info me-1"></i>Cédula:</span>
-                                        <span class="text-white fw-bold">{{ alu.cedula }}</span>
-                                    </div>
-                                    <div
-                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
-                                        <span class="text-muted"><i
-                                                class="bi bi-calendar-event text-info me-1"></i>Nació:</span>
-                                        <span class="text-white">{{ alu.fecha_nac or '---' }}</span>
-                                    </div>
-                                    <div
-                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
-                                        <span class="text-muted"><i
-                                                class="bi bi-droplet-fill text-danger me-1"></i>Sangre:</span>
-                                        <span class="badge bg-danger">{{ alu.sangre or '---' }}</span>
-                                    </div>
-                                    <div
-                                        class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
-                                        <span class="text-muted"><i
-                                                class="bi bi-hospital text-success me-1"></i>EPS:</span>
-                                        <span class="text-white text-truncate" style="max-width: 100px;">{{ alu.eps or
-                                            '---' }}</span>
-                                    </div>
-                                    <div
-                                        class="d-flex justify-content-between align-items-center mt-2 border-top border-secondary pt-2">
-                                        <span class="text-muted small"><i
-                                                class="bi bi-star-fill text-warning me-1"></i>Nivel:</span>
-                                        <select
-                                            class="form-select form-select-sm bg-dark text-warning border-warning w-auto"
-                                            style="font-size: 0.75rem; padding: 2px 5px; cursor: pointer;"
-                                            onchange="actualizarNivel('{{ alu._id }}', this.value)">
-                                            <option value="Principiante" {% if alu.nivel_roller=='Principiante'
-                                                %}selected{% endif %}>Principiante</option>
-                                            <option value="Medio" {% if alu.nivel_roller=='Medio' %}selected{% endif %}>
-                                                Medio</option>
-                                            <option value="Avanzado" {% if alu.nivel_roller=='Avanzado' %}selected{%
-                                                endif %}>Avanzado</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-grid mt-3 border-top border-secondary pt-2">
-                                        <button type="button" class="btn btn-sm btn-outline-danger border-0"
-                                            onclick="confirmarEliminar('{{ alu._id }}', '{{ alu.nombre }}')">
-                                            <i class="bi bi-trash3-fill me-1"></i> Eliminar Patinador
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="card card-body p-2 text-start shadow-inner"
+    style="background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; font-size: 0.8rem;">
+    
+    <div class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+        <span class="text-muted small"><i class="bi bi-person-vcard text-info me-1"></i>Cédula:</span>
+        <span class="text-white fw-bold">{{ alu.cedula }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+        <span class="text-muted small"><i class="bi bi-rulers text-info me-1"></i>Talla Patín:</span>
+        <span class="text-white fw-bold">{{ alu.talla_patin | default('N/A', true) }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+        <span class="text-muted small"><i class="bi bi-geo-alt text-info me-1"></i>Zona:</span>
+        <span class="text-white">{{ alu.zona_residencia | default('---', true) }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+        <span class="text-muted small"><i class="bi bi-hospital text-success me-1"></i>EPS:</span>
+        <span class="text-white text-truncate" style="max-width: 100px;">{{ alu.eps or '---' }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
+        <span class="text-muted small"><i class="bi bi-droplet-fill text-danger me-1"></i>Sangre:</span>
+        <span class="badge bg-danger">{{ alu.sangre or '---' }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-2 border-top border-secondary pt-2">
+        <span class="text-muted small"><i class="bi bi-star-fill text-warning me-1"></i>Nivel:</span>
+        <select class="form-select form-select-sm bg-dark text-warning border-warning w-auto"
+            style="font-size: 0.75rem; padding: 2px 5px; cursor: pointer;"
+            onchange="actualizarNivel('{{ alu._id }}', this.value)">
+            <option value="Caminante" {% if alu.nivel_roller == 'Caminante' %}selected{% endif %}>🚶 Caminante</option>
+            <option value="Principiante" {% if alu.nivel_roller == 'Principiante' %}selected{% endif %}>🛹 Principiante</option>
+            <option value="Intermedio" {% if alu.nivel_roller == 'Intermedio' %}selected{% endif %}>🔥 Intermedio</option>
+            <option value="Avanzado" {% if alu.nivel_roller == 'Avanzado' %}selected{% endif %}>⚡ Avanzado</option>
+        </select>
+    </div>
+
+    <div class="d-grid mt-3 border-top border-secondary pt-2">
+        <button type="button" class="btn btn-sm btn-outline-danger border-0"
+            onclick="confirmarEliminar('{{ alu._id }}', '{{ alu.nombre }}')">
+            <i class="bi bi-trash3-fill me-1"></i> Eliminar Patinador
+        </button>
+    </div>
+</div>
 
                             <hr class="border-secondary opacity-25">
 
@@ -645,6 +659,12 @@ comportamiento de los buscadores. -->
                 </div>
                 {% endfor %}
             </div>
+
+
+
+
+
+
 
             <div class="row justify-content-center mt-5 mb-5">
                 <div class="col-md-10">

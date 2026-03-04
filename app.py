@@ -18,7 +18,7 @@ AUTOR: Omar Castañeda
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from datetime import datetime  
+from datetime import datetime, timedelta
 import logic
 import os
 from werkzeug.utils import secure_filename
@@ -170,25 +170,47 @@ def logout():
 # En app.py
 @app.route('/')
 def home():
-    # 🔒 EL CANDADO (Agrégalo aquí mismo)
+    # 🔒 EL CANDADO
     if not session.get('admin'):
         return redirect(url_for('login'))
     
-    # --- De aquí para abajo es tu código que ya funciona ---
-    
-    # 1. ESTA NO SE TOCA (Maneja los colores verde/rojo)
+    # 1. Obtener datos base
     alumnos_datos = logic.obtener_alumnos_con_estado_pago()
-    
-    # 2. ESTA ES LA QUE ARREGLAMOS (Trae la lista de pagos)
     lista_pagos = logic.obtener_ultimos_pagos() 
-    
-    # 3. ESTADÍSTICAS (Maneja las gráficas)
     stats = logic.obtener_estadisticas_profe()
-    
+
+    # 🎂 LÓGICA DE ALERTAS DE CUMPLEAÑOS (Próximos 10 días)
+    hoy = datetime.now()
+    dentro_de_10_dias = hoy + timedelta(days=10)
+    cumpleañeros_alerta = []
+
+    for alu in alumnos_datos:
+        if alu.get('fecha_nac'):
+            try:
+                # Convertimos la fecha (ajusta el formato si en tu BD es distinto)
+                f_nac = datetime.strptime(alu['fecha_nac'], '%Y-%m-%d')
+                cumple_este_año = f_nac.replace(year=hoy.year)
+                
+                # Ajuste para fin de año
+                if cumple_este_año.date() < hoy.date():
+                    cumple_este_año = cumple_este_año.replace(year=hoy.year + 1)
+                
+                # Si falta entre 0 y 10 días
+                if hoy.date() <= cumple_este_año.date() <= dentro_de_10_dias.date():
+                    # Guardamos días faltantes para mostrar en la alerta
+                    dias_faltan = (cumple_este_año.date() - hoy.date()).days
+                    alu['dias_cumple'] = dias_faltan
+                    cumpleañeros_alerta.append(alu)
+            except Exception as e:
+                print(f"Error procesando cumple de {alu.get('nombre')}: {e}")
+                continue
+
+    # Enviamos todo al index.html
     return render_template('index.html', 
                            alumnos=alumnos_datos, 
                            pagos=lista_pagos,
-                           stats_profe=stats)
+                           stats_profe=stats,
+                           cumpleañeros=cumpleañeros_alerta) # <--- ¡Nueva variable!
 
 
 
