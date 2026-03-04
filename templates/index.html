@@ -404,34 +404,89 @@ comportamiento de los buscadores. -->
                     style="font-size: 1.8rem; margin-left: -5px;"></i>
             </a>
         </div>
-        ```
 
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6 border p-4 rounded bg-secondary bg-opacity-10 efecto-salto">
+
+        <div class="row justify-content-center mt-5 mb-5">
+            <div class="col-md-8 border p-4 rounded bg-secondary bg-opacity-10 efecto-salto shadow-lg"
+                style="border-color: rgba(0, 242, 255, 0.3) !important;">
+
+                <div class="text-center mb-4 border-bottom border-info pb-3">
+                    <h3 class="text-info fw-bold text-uppercase" style="letter-spacing: 1px;">
+                        <i class="bi bi-person-lines-fill"></i> Nueva Ficha de Registro
+                    </h3>
+                    <p class="text-muted small mb-0">Ingresa los datos del patinador para darle de alta en el sistema
+                    </p>
+                </div>
+
                 <form action="/registrar" method="POST" enctype="multipart/form-data">
-                    <div class="row border-bottom border-secondary mb-3 pb-2">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Nombre Completo:</label>
-                            <input type="text" name="nombre" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Cédula/TI:</label>
-                            <input type="text" name="cedula" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">WhatsApp:</label>
-                            <input type="text" name="whatsapp" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Fecha Nacimiento:</label>
-                            <input type="date" name="fecha_nac" class="form-control">
-                        </div>
-                    </div>
+                    <div class="row border-bottom border-secondary mb-3 pb-3">
 
-                    <div class="row border-bottom border-secondary mb-3 pb-2 bg-info bg-opacity-10 p-2 rounded">
-                        <div class="col-6 mb-3">
-                            <label class="form-label text-info fw-bold">Tipo de Sangre:</label>
-                            <select name="sangre" class="form-select">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-white fw-bold"><i class="bi bi-person"></i> Nombre
+                                Completo:</label>
+                            <input type="text" name="nombre" class="form-control bg-dark text-white border-secondary"
+                                required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-white fw-bold"><i class="bi bi-person-vcard"></i> Cédula /
+                                TI:</label>
+                            <input type="text" name="cedula" class="form-control bg-dark text-white border-secondary"
+                                required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-info fw-bold"><i class="bi bi-whatsapp"></i> Celular
+                                (WhatsApp):</label>
+                            <input type="number" name="whatsapp" class="form-control bg-dark text-white border-info"
+                                placeholder="Ej: 3101234567" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-white fw-bold"><i class="bi bi-calendar-date"></i> Fecha de
+                                Nacimiento:</label>
+                            <input type="date" name="fecha_nac"
+                                class="form-control bg-dark text-white border-secondary">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label text-info fw-bold"><i class="bi bi-rulers"></i> Talla
+                                Patín:</label>
+                            <input type="number" name="talla_patin"
+                                class="form-control bg-dark text-white border-secondary" placeholder="Ej: 39" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label text-info fw-bold"><i class="bi bi-geo-alt"></i> Zona
+                                Urbana:</label>
+                            <select name="zona_residencia" class="form-control bg-dark text-white border-secondary"
+                                required>
+                                <option value="" selected disabled>Seleccione...</option>
+                                <option value="Norte">Norte</option>
+                                <option value="Sur">Sur</option>
+                                <option value="Oriente">Oriente</option>
+                                <option value="Oeste">Oeste</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label text-info fw-bold"><i class="bi bi-bar-chart-steps"></i>
+                                Nivel:</label>
+                            <select name="nivel_roller" class="form-control bg-dark text-white border-secondary"
+                                required>
+                                <option value="" selected disabled>Seleccione...</option>
+                                <option value="Caminante">🚶 Caminante</option>
+                                <option value="Principiante">🛹 Principiante</option>
+                                <option value="Intermedio">🔥 Intermedio</option>
+                                <option value="Avanzado">⚡ Avanzado</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-danger fw-bold"><i class="bi bi-droplet-fill"></i>
+                                Sangre:</label>
+                            <select name="sangre" class="form-control bg-dark text-white border-secondary">
+                                <option value="" selected disabled>Seleccione...</option>
                                 <option value="O+">O+</option>
                                 <option value="O-">O-</option>
                                 <option value="A+">A+</option>
@@ -442,40 +497,32 @@ comportamiento de los buscadores. -->
                                 <option value="AB-">AB-</option>
                             </select>
                         </div>
-                        <div class="col-6 mb-3">
-                            <label class="form-label text-info fw-bold">EPS:</label>
-                            <input type="text" name="eps" class="form-control">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-success fw-bold"><i class="bi bi-hospital"></i> EPS:</label>
+                            <input type="text" name="eps" class="form-control bg-dark text-white border-secondary"
+                                placeholder="Ej: Sura, Sanitas...">
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label class="form-label text-info fw-bold">Foto del Perfil:</label>
-                        <input type="file" name="foto" class="form-control border-info bg-dark text-white"
-                            accept="image/*">
-                        <small class="text-muted">Puedes tomar una foto o elegir de la galería</small>
+
+                        <div class="col-12 mb-3 mt-2">
+                            <label class="form-label text-white fw-bold"><i class="bi bi-camera"></i> Foto de Perfil
+                                (Opcional):</label>
+                            <input type="file" name="foto" class="form-control bg-dark text-white border-secondary"
+                                accept="image/*">
+                        </div>
+
                     </div>
 
-                    <div class="bg-warning bg-opacity-10 p-2 rounded">
-                        <label class="form-label text-warning fw-bold">🚨 CONTACTO DE EMERGENCIA:</label>
-                        <div class="row">
-                            <div class="col-12 mb-2">
-                                <input type="text" name="emergencia_nombre" class="form-control"
-                                    placeholder="Nombre completo del contacto">
-                            </div>
-                            <div class="col-6">
-                                <input type="text" name="parentesco" class="form-control" placeholder="Parentesco">
-                            </div>
-                            <div class="col-6">
-                                <input type="text" name="emergencia_tel" class="form-control"
-                                    placeholder="Teléfono emergencia">
-                            </div>
-                        </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-info fw-bold text-dark fs-5"
+                            style="border-radius: 50px; box-shadow: 0 0 15px rgba(0,242,255,0.4);">
+                            <i class="bi bi-save2-fill me-2"></i> Guardar Ficha de Registro
+                        </button>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-4 shadow">💎 REGISTRAR EN
-                        POWERFULL</button>
                 </form>
             </div>
         </div>
+
 
         <div class="container mt-5">
             <div class="seccion-titulo">
@@ -657,7 +704,7 @@ comportamiento de los buscadores. -->
                                         </li>
                                         <li>
                                             <a class="dropdown-item text-white fw-bold" href="javascript:void(0)"
-                                                onclick="abrirCobroManual('{{ alu._id }}', '{{ alu.nombre }}')">
+                                                onclick="abrirCobroManual('{{ alu._id }}', '{{ alu.nombre }}', '{{ alu.whatsapp }}')">
                                                 <i class="bi bi-clock-history me-2 text-danger"></i>Pago de Fecha
                                                 Anterior
                                             </a>
@@ -944,7 +991,7 @@ comportamiento de los buscadores. -->
     </script>
 
     <script>
-        function abrirCobroManual(id_alumno, nombre) {
+        function abrirCobroManual(id_alumno, nombre, celular) {
             Swal.fire({
                 title: '<i class="bi bi-cash-coin text-info"></i> PAGO PERSONALIZADO',
                 html: `
@@ -999,6 +1046,9 @@ comportamiento de los buscadores. -->
                         })
                         .then(data => {
                             if (data.success) {
+                                // 🔥 ENVIAR RECIBO POR WHATSAPP 🔥
+                                enviarReciboWhatsApp(nombre, celular, result.value.tipo, result.value.monto);
+
                                 Swal.fire({
                                     icon: 'success',
                                     title: '¡SISTEMA ACTUALIZADO!',
@@ -1022,7 +1072,33 @@ comportamiento de los buscadores. -->
     </script>
 
     <script>
-        function cobroDinamico(id_alumno, nombre, tipo, monto_sugerido) {
+        // Función centralizada para enviar WhatsApp (Evita repetir código)
+        function enviarReciboWhatsApp(nombre, celular, tipo_pago, monto) {
+            // Verifica si el celular existe y no es "None" ni está vacío
+            if (celular && celular !== "None" && celular.trim() !== "") {
+                let numeroLimpio = celular.replace(/\s+/g, '');
+
+                // Agrega el indicativo de Colombia (+57) si no lo tiene
+                if (!numeroLimpio.startsWith("57") && !numeroLimpio.startsWith("+")) {
+                    numeroLimpio = "57" + numeroLimpio;
+                }
+
+                // Darle formato de moneda al monto
+                let montoFormateado = new Intl.NumberFormat("es-CO").format(monto);
+
+                // Mensaje persuasivo y profesional
+                let mensaje = `Hola *${nombre}* 👋,\n\n*PowerFull Club* confirma la recepción de tu *${tipo_pago}* por valor de *$${montoFormateado}*.\n\n¡Gracias por tu compromiso y a seguir rodando! 🛼🔥`;
+
+                let urlWhatsApp = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`;
+
+                // Abre WhatsApp en una nueva pestaña (o en la app móvil)
+                window.open(urlWhatsApp, '_blank');
+            } else {
+                console.log("No se envió WhatsApp: Alumno sin número registrado.");
+            }
+        }
+
+        function cobroDinamico(id_alumno, nombre, tipo, monto_sugerido, celular) {
             Swal.fire({
                 title: `<i class="bi bi-wallet2 text-warning"></i> COBRO ${tipo.toUpperCase()}`,
                 html: `
@@ -1066,6 +1142,9 @@ comportamiento de los buscadores. -->
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
+                                // 🔥 ENVIAR RECIBO POR WHATSAPP 🔥
+                                enviarReciboWhatsApp(nombre, celular, tipo, result.value);
+
                                 Swal.fire({
                                     icon: 'success',
                                     title: '¡PAGO REGISTRADO!',
