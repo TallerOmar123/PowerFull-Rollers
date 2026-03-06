@@ -299,7 +299,7 @@ comportamiento de los buscadores. -->
                     style="font-size: 1.8rem; margin-left: -5px;"></i>
             </a>
         </div>
-    
+
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-11">
@@ -450,23 +450,44 @@ comportamiento de los buscadores. -->
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label class="form-label text-info fw-bold"><i class="bi bi-rulers"></i> Talla
-                                Patín:</label>
-                            <input type="number" name="talla_patin"
-                                class="form-control bg-dark text-white border-secondary" placeholder="Ej: 39" required>
+                            <label class="form-label text-info fw-bold"><i class="bi bi-person-bounding-box"></i> Talla
+                                Camiseta:</label>
+                            <select name="talla_camiseta" class="form-select bg-dark text-white border-secondary"
+                                required>
+                                <option value="" selected disabled>Seleccione...</option>
+                                <option value="4">4 (Niños)</option>
+                                <option value="6">6 (Niños)</option>
+                                <option value="8">8 (Niños)</option>
+                                <option value="10">10 (Niños)</option>
+                                <option value="12">12 (Niños)</option>
+                                <option value="14">14 (Niños)</option>
+                                <option value="16">16 (Niños)</option>
+                                <option value="XS">Talla XS</option>
+                                <option value="S">Talla S</option>
+                                <option value="M">Talla M</option>
+                                <option value="L">Talla L</option>
+                                <option value="XL">Talla XL</option>
+                            </select>
                         </div>
 
                         <div class="col-md-4 mb-3">
                             <label class="form-label text-info fw-bold"><i class="bi bi-geo-alt"></i> Zona
                                 Urbana:</label>
-                            <select name="zona_residencia" class="form-control bg-dark text-white border-secondary"
-                                required>
+
+                            <select name="zona_residencia" id="select_zona"
+                                class="form-select bg-dark text-white border-secondary" required
+                                onchange="toggleZonaManual()">
                                 <option value="" selected disabled>Seleccione...</option>
                                 <option value="Norte">Norte</option>
                                 <option value="Sur">Sur</option>
                                 <option value="Oriente">Oriente</option>
                                 <option value="Oeste">Oeste</option>
+                                <option value="Otro">Otro (Escribir manualmente)</option>
                             </select>
+
+                            <input type="text" name="zona_residencia_manual" id="input_zona_manual"
+                                class="form-control bg-dark text-white border-info mt-2"
+                                placeholder="Ej: Jamundí, Yumbo..." style="display: none;">
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -615,10 +636,12 @@ comportamiento de los buscadores. -->
 
                                     <div
                                         class="d-flex justify-content-between mb-1 border-bottom border-secondary pb-1">
-                                        <span class="text-muted small"><i class="bi bi-rulers text-info me-1"></i>Talla
-                                            Patín:</span>
-                                        <span class="text-white fw-bold">{{ alu.talla_patin | default('N/A', true)
-                                            }}</span>
+                                        <span class="text-muted small">
+                                            <i class="bi bi-person-bounding-box text-info me-1"></i>Talla Camiseta:
+                                        </span>
+                                        <span class="text-white fw-bold">
+                                            {{ alu.talla_camiseta | default('N/A', true) }}
+                                        </span>
                                     </div>
 
                                     <div
@@ -683,20 +706,23 @@ comportamiento de los buscadores. -->
                                     <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Diario', 5000, '{{ alu.whatsapp }}')">
-                                                <i class="bi bi-calendar-event me-2 text-info"></i>Pago Diario
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Pago por Clase Ocasional', 7000, '{{ alu.whatsapp }}')">
+                                                <i class="bi bi-calendar-event me-2 text-info"></i>Pago Clase Ocasional
+                                                ($7.000)
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Semanal', 15000, '{{ alu.whatsapp }}')">
-                                                <i class="bi bi-calendar-range me-2 text-warning"></i>Pago Semanal
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Pago de Plan Semanal', 12000, '{{ alu.whatsapp }}')">
+                                                <i class="bi bi-calendar-range me-2 text-warning"></i>Pago Plan Semanal
+                                                ($12.000)
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Mensual', 50000, '{{ alu.whatsapp }}')">
-                                                <i class="bi bi-calendar-month me-2 text-success"></i>Pago Mensual
+                                                onclick="cobroDinamico('{{ alu._id }}', '{{ alu.nombre }}', 'Pago de Plan Mensual', 40000, '{{ alu.whatsapp }}')">
+                                                <i class="bi bi-calendar-month me-2 text-success"></i>Pago Plan Mensual
+                                                ($40.000)
                                             </a>
                                         </li>
                                         <li>
@@ -705,7 +731,7 @@ comportamiento de los buscadores. -->
                                         <li>
                                             <a class="dropdown-item text-white fw-bold" href="javascript:void(0)"
                                                 onclick="abrirCobroManual('{{ alu._id }}', '{{ alu.nombre }}', '{{ alu.whatsapp }}')">
-                                                <i class="bi bi-clock-history me-2 text-danger"></i>Pago de Fecha
+                                                <i class="bi bi-clock-history me-2 text-danger"></i>Cobro de Fecha
                                                 Anterior
                                             </a>
                                         </li>
@@ -1007,11 +1033,11 @@ comportamiento de los buscadores. -->
                        placeholder="Ej: 10000">
                 
                 <label class="form-label text-info small fw-bold">CONCEPTO:</label>
-                <select id="tipo_manual" class="form-select bg-dark text-white border-secondary">
-                    <option value="Clase">Pago de Clase</option>
-                    <option value="Semana">Pago de Semana</option>
-                    <option value="Abono">Abono a Deuda</option>
-                    <option value="Mensualidad">Mensualidad Full</option>
+                <select id="tipo_manual" class="form-select bg-dark text-white border-secondary mb-3">
+                    <option value="Pago por Clase Ocasional">Pago por Clase Ocasional</option>
+                    <option value="Pago de Plan Semanal">Pago de Plan Semanal</option>
+                    <option value="Pago de Plan Mensual">Pago de Plan Mensual</option>
+                    <option value="Abono a Deuda">Abono a Deuda</option>
                 </select>
             </div>
         `,
@@ -1086,8 +1112,8 @@ comportamiento de los buscadores. -->
                 // Darle formato de moneda al monto
                 let montoFormateado = new Intl.NumberFormat("es-CO").format(monto);
 
-                // Mensaje persuasivo y profesional
-                let mensaje = `Hola *${nombre}* 👋,\n\n*PowerFull Club* confirma la recepción de tu *${tipo_pago}* por valor de *$${montoFormateado}*.\n\n¡Gracias por tu compromiso y a seguir rodando! 🛼🔥`;
+                // 🔥 EL NUEVO MENSAJE ESTILO POWERFULL 🔥
+                let mensaje = `Hola Roller! 🛼\n\nRecibimos tu aporte por valor de *$${montoFormateado}* por concepto de *${tipo_pago}*.\n\n¡Nos vemos en el entreno con toda la energía y buena actitud!! 🚀💪`;
 
                 let urlWhatsApp = `https://wa.me/${numeroLimpio}?text=${encodeURIComponent(mensaje)}`;
 
@@ -1097,7 +1123,9 @@ comportamiento de los buscadores. -->
                 console.log("No se envió WhatsApp: Alumno sin número registrado.");
             }
         }
+    </script>
 
+    <script>
         function cobroDinamico(id_alumno, nombre, tipo, monto_sugerido, celular) {
             Swal.fire({
                 title: `<i class="bi bi-wallet2 text-warning"></i> COBRO ${tipo.toUpperCase()}`,
@@ -1106,8 +1134,15 @@ comportamiento de los buscadores. -->
                     <p class="text-muted mb-3 small">Alumno: <b class="text-white">${nombre}</b></p>
                     <label class="form-label text-warning small fw-bold">VALOR A COBRAR ($):</label>
                     <input type="number" id="monto_dinamico"
-                           class="form-control bg-dark text-white border-warning fs-4 text-center fw-bold"
+                           class="form-control bg-dark text-white border-warning fs-4 text-center fw-bold mb-3"
                            value="${monto_sugerido}">
+                    
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" id="notificar_wa_dinamico" checked style="cursor: pointer;">
+                        <label class="form-check-label text-info small fw-bold" for="notificar_wa_dinamico" style="cursor: pointer;">
+                            <i class="bi bi-whatsapp"></i> Notificar recibo por WhatsApp
+                        </label>
+                    </div>
                 </div>
             `,
                 background: '#161b1e',
@@ -1120,11 +1155,14 @@ comportamiento de los buscadores. -->
                 customClass: { popup: 'border border-warning' },
                 preConfirm: () => {
                     const montoFinal = document.getElementById('monto_dinamico').value;
+                    const quiereNotificar = document.getElementById('notificar_wa_dinamico').checked;
+
                     if (!montoFinal || montoFinal <= 0) {
                         Swal.showValidationMessage('Ingresa un valor válido mayor a 0');
                         return false;
                     }
-                    return montoFinal;
+                    // Ahora enviamos las dos cosas: el dinero y la decisión del WhatsApp
+                    return { monto: montoFinal, notificar: quiereNotificar };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -1134,7 +1172,7 @@ comportamiento de los buscadores. -->
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             id_alumno: id_alumno,
-                            monto: result.value,
+                            monto: result.value.monto,
                             tipo: tipo,
                             fecha: fechaHoy
                         })
@@ -1142,13 +1180,15 @@ comportamiento de los buscadores. -->
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
-                                // 🔥 ENVIAR RECIBO POR WHATSAPP 🔥
-                                enviarReciboWhatsApp(nombre, celular, tipo, result.value);
+                                // 🔥 LA DECISIÓN DEL PROFE 🔥
+                                if (result.value.notificar) {
+                                    enviarReciboWhatsApp(nombre, celular, tipo, result.value.monto);
+                                }
 
                                 Swal.fire({
                                     icon: 'success',
                                     title: '¡PAGO REGISTRADO!',
-                                    text: `$${result.value} añadidos a la caja.`,
+                                    text: `$${result.value.monto} añadidos a la caja.`,
                                     background: '#161b1e',
                                     color: '#00f2ff',
                                     showConfirmButton: false,
@@ -1216,6 +1256,31 @@ comportamiento de los buscadores. -->
                 });
         }
     </script>
+
+
+
+    <script>
+        // 🌍 Función para la Zona Urbana personalizada
+        function toggleZonaManual() {
+            let select = document.getElementById('select_zona');
+            let inputManual = document.getElementById('input_zona_manual');
+
+            if (select.value === 'Otro') {
+                inputManual.style.display = 'block'; // Aparece
+                inputManual.required = true;         // Lo hace obligatorio
+            } else {
+                inputManual.style.display = 'none';  // Se esconde
+                inputManual.required = false;        // Ya no es obligatorio
+                inputManual.value = '';              // Se limpia por si se equivocaron
+            }
+        }
+    </script>
+
+
+
+
+
+
 </body>
 
 </html>

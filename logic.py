@@ -59,9 +59,17 @@ except Exception as e:
 # en la colección, confirmando mediante un mensaje que la operación fue exitosa.
 def guardar_alumno(datos):
     try:
+        # 🕵️‍♂️ PUNTO DE CONTROL: Revisamos el sobre antes de guardarlo
+        print(f"📦 Recibiendo expediente de: {datos.get('nombre', 'Desconocido')}")
+        print(f"📸 URL de la foto recibida: '{datos.get('foto', 'NINGUNA')}'")
+
+        # Seguro anti-fallos: Si por alguna razón app.py olvidó mandar el campo "foto", lo creamos vacío
+        if "foto" not in datos:
+            datos["foto"] = ""
+
         # Intentamos meter el sobre en el archivador
         coleccion.insert_one(datos)
-        print(f"✅ Expediente completo de {datos['nombre']} guardado en Atlas.")
+        print(f"✅ Expediente completo guardado exitosamente en Atlas.")
 
     except Exception as e:
         # Si algo falla (ej. se cae el Wi-Fi), atrapamos el error aquí
@@ -109,15 +117,21 @@ def obtener_alumnos_con_estado_pago():
 
             # 4. Decidimos el color del semáforo
             if ultimo_pago:
-                if ultimo_pago.get("tipo") == "Mensualidad":
-                    estado = "Pagado (Mes)"
-                    color = "success"  # Verde
+                # Leemos el tipo de pago y lo pasamos a minúsculas para analizarlo
+                tipo_pago = str(ultimo_pago.get("tipo", "")).lower()
+
+                if "mensual" in tipo_pago:
+                    estado = "Plan Mensual Activo"
+                    color = "success"  # Verde brillante
+                elif "semanal" in tipo_pago:
+                    estado = "Plan Semanal Activo"
+                    color = "primary"  # Azul oscuro
                 else:
-                    estado = "Clase Hoy"
-                    color = "info"    # Azul
+                    estado = "Clase Ocasional"
+                    color = "info"    # Azul claro/Cian
             else:
-                estado = "Pendiente"
-                color = "danger"      # Rojo
+                estado = "Pago Pendiente"
+                color = "danger"      # Rojo alerta
 
             # 🔥 EL CAMBIO MÁGICO 🔥 (Tu lógica original intacta)
             # En lugar de crear un objeto nuevo incompleto, usamos el mismo que trajo la base de datos
@@ -796,4 +810,29 @@ def actualizar_asistentes_ruta(id_ruta, lista_asistentes):
         return True
     except Exception as e:
         print(f"❌ Error al guardar asistentes en la ruta: {e}")
+        return False
+    
+
+
+
+
+
+
+
+
+def cambiar_estado_asistencia(id_asistencia, nuevo_estado):
+    """
+    Busca una asistencia por su ID y le actualiza el campo 'estado'.
+    Si el campo no existía (porque son asistencias viejas), MongoDB lo crea automáticamente.
+    """
+    try:
+        from bson.objectid import ObjectId
+        db.asistencias.update_one(
+            {"_id": ObjectId(id_asistencia)},
+            {"$set": {"estado": nuevo_estado}}
+        )
+        print(f"✅ Estado de asistencia {id_asistencia} cambiado a {nuevo_estado}")
+        return True
+    except Exception as e:
+        print(f"❌ Error al cambiar estado de asistencia: {e}")
         return False

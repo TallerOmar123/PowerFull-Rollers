@@ -72,40 +72,40 @@
 <body class="bg-dark text-white p-4">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <script>
-            // Esperamos a que cargue la página para lanzar la magia
-            document.addEventListener('DOMContentLoaded', function() {
-                {% for category, message in messages %}
-                
-                // Si el mensaje es de eliminar (danger), brillará en rojo. Si es otro, en cian.
-                let colorNeón = '{{ category }}' === 'danger' ? '#dc3545' : '#00f2ff';
-                let icono = '{{ category }}' === 'danger' ? 'success' : 'success'; // Usamos el check verde de éxito
-                
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end', // Sale en la esquina superior derecha
-                    icon: icono,
-                    title: '<span style="font-family: \'Segoe UI\', sans-serif; font-size: 15px;">{{ message }}</span>',
-                    showConfirmButton: false,
-                    timer: 3500, // Desaparece en 3.5 segundos
-                    timerProgressBar: true,
-                    background: '#161b1e',
-                    color: '#ffffff',
-                    iconColor: colorNeón,
-                    customClass: {
-                        popup: 'shadow-lg border-0'
-                    },
-                    didOpen: (toast) => {
-                        // Le ponemos una barra lateral de color neón
-                        toast.style.borderLeft = `4px solid ${colorNeón}`;
-                    }
-                });
+    {% if messages %}
+    <script>
+        // Esperamos a que cargue la página para lanzar la magia
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for category, message in messages %}
 
-                {% endfor %}
+            // Si el mensaje es de eliminar (danger), brillará en rojo. Si es otro, en cian.
+            let colorNeón = '{{ category }}' === 'danger' ? '#dc3545' : '#00f2ff';
+            let icono = '{{ category }}' === 'danger' ? 'success' : 'success'; // Usamos el check verde de éxito
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end', // Sale en la esquina superior derecha
+                icon: icono,
+                title: '<span style="font-family: \'Segoe UI\', sans-serif; font-size: 15px;">{{ message }}</span>',
+                showConfirmButton: false,
+                timer: 3500, // Desaparece en 3.5 segundos
+                timerProgressBar: true,
+                background: '#161b1e',
+                color: '#ffffff',
+                iconColor: colorNeón,
+                customClass: {
+                    popup: 'shadow-lg border-0'
+                },
+                didOpen: (toast) => {
+                    // Le ponemos una barra lateral de color neón
+                    toast.style.borderLeft = `4px solid ${colorNeón}`;
+                }
             });
-        </script>
-        {% endif %}
+
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
     {% endwith %}
 
     <div class="container border border-secondary rounded p-4 bg-secondary bg-opacity-10 shadow">
@@ -131,7 +131,20 @@
                     <tr>
                         <td class="fw-bold align-middle">{{ asis.nombre }}</td>
                         <td class="align-middle">{{ asis.fecha }}</td>
-                        <td class="align-middle"><span class="badge bg-success">Presente</span></td>
+
+                        <td class="align-middle">
+                            <select class="form-select form-select-sm bg-dark text-white w-auto"
+                                style="border: 1px solid rgba(0, 242, 255, 0.3); cursor: pointer;"
+                                onchange="actualizarEstadoAsistencia('{{ asis.id }}', this.value, this)">
+                                <option value="Activo" class="text-success" {% if asis.estado=='Activo' or not
+                                    asis.estado %}selected{% endif %}>🟢 Activo</option>
+                                <option value="Ausente" class="text-danger" {% if asis.estado=='Ausente' %}selected{%
+                                    endif %}>🔴 Ausente</option>
+                                <option value="Inactivo" class="text-secondary" {% if asis.estado=='Inactivo'
+                                    %}selected{% endif %}>⚪ Inactivo</option>
+                            </select>
+                        </td>
+
                         <td class="text-center">
                             <form id="form-delete-{{ asis.id }}" action="/eliminar_asistencia/{{ asis.id }}"
                                 method="POST" style="display:inline;">
@@ -155,28 +168,70 @@
 
 
     <script>
-    function confirmarEliminarAsistencia(id, nombre, fecha) {
-        Swal.fire({
-            title: '<i class="bi bi-exclamation-triangle-fill text-danger"></i> ¿ELIMINAR ASISTENCIA?',
-            html: `Vas a borrar el registro de <b class="text-info">${nombre}</b><br>del día <b class="text-warning">${fecha}</b>.<br><br><span class="text-danger small fw-bold">¡Esta acción no se puede deshacer!</span>`,
-            background: '#161b1e',
-            color: '#ffffff',
-            showCancelButton: true,
-            confirmButtonColor: '#dc3545', // Rojo peligro
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: '🗑️ SÍ, ELIMINAR',
-            cancelButtonText: 'CANCELAR',
-            customClass: { 
-                popup: 'border border-danger shadow-lg' 
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si el profesor confirma, JavaScript le da "Enter" al formulario invisible
-                document.getElementById(`form-delete-${id}`).submit();
-            }
-        });
-    }
-</script>
+        function confirmarEliminarAsistencia(id, nombre, fecha) {
+            Swal.fire({
+                title: '<i class="bi bi-exclamation-triangle-fill text-danger"></i> ¿ELIMINAR ASISTENCIA?',
+                html: `Vas a borrar el registro de <b class="text-info">${nombre}</b><br>del día <b class="text-warning">${fecha}</b>.<br><br><span class="text-danger small fw-bold">¡Esta acción no se puede deshacer!</span>`,
+                background: '#161b1e',
+                color: '#ffffff',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545', // Rojo peligro
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '🗑️ SÍ, ELIMINAR',
+                cancelButtonText: 'CANCELAR',
+                customClass: {
+                    popup: 'border border-danger shadow-lg'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el profesor confirma, JavaScript le da "Enter" al formulario invisible
+                    document.getElementById(`form-delete-${id}`).submit();
+                }
+            });
+        }
+    </script>
+
+
+
+
+
+
+    <script>
+        function actualizarEstadoAsistencia(id_asistencia, nuevo_estado, selectElement) {
+            // Cambiamos el color del borde un segundo para que el profe sepa que se está guardando
+            selectElement.style.borderColor = '#ffc107';
+
+            fetch('/actualizar_estado_asistencia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id_asistencia, estado: nuevo_estado })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Restauramos el borde neón
+                        selectElement.style.borderColor = 'rgba(0, 242, 255, 0.3)';
+
+                        // Alerta rápida y no invasiva (Toast)
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Estado actualizado a: ' + nuevo_estado,
+                            showConfirmButton: false,
+                            timer: 1500,
+                            background: '#161b1e',
+                            color: '#00f2ff'
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error("Error al actualizar:", err);
+                    Swal.fire('Error', 'No pudimos conectar con el servidor', 'error');
+                    selectElement.style.borderColor = '#dc3545'; // Rojo si falla
+                });
+        }
+    </script>
 
 
 

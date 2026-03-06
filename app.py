@@ -216,22 +216,28 @@ def home():
 
 
 
-#   RECEPTOR DE NUEVOS ALUMNOS   #
+#   RECEPTOR DE NUEVOS ALUMNOS   #
 #Implementa un punto de enlace (endpoint) de tipo POST diseñado para la captura y 
 #serialización de datos provenientes del formulario de registro. Transforma las entradas 
 #del usuario en un objeto de diccionario estructurado y activa la función de persistencia en 
 #la capa de lógica antes de redirigir al usuario a la vista principal.
 @app.route('/registrar', methods=['POST'])
 def registrar():
+    # 🧠 LÓGICA INTELIGENTE DE ZONA: 
+    zona_elegida = request.form.get('zona_residencia')
+    # Si eligió "Otro", la zona real será lo que haya escrito en el campo manual
+    if zona_elegida == 'Otro':
+        zona_elegida = request.form.get('zona_residencia_manual')
+
     # 1. Recolectamos TODOS los datos (¡Ahora sí incluimos los nuevos!)
     datos = {
         "nombre": request.form.get('nombre'),
         "cedula": request.form.get('cedula'),
         "whatsapp": request.form.get('whatsapp'),
         "fecha_nac": request.form.get('fecha_nac'),
-        "talla_patin": request.form.get('talla_patin'),       # 🔥 CABLE CONECTADO
-        "zona_residencia": request.form.get('zona_residencia'), # 🔥 CABLE CONECTADO
-        "nivel_roller": request.form.get('nivel_roller'),       # 🔥 CABLE CONECTADO
+        "talla_camiseta": request.form.get('talla_camiseta'),       # 🔥 CABLE CONECTADO
+        "zona_residencia": zona_elegida,                            # 🔥 LÓGICA DE ZONA APLICADA
+        "nivel_roller": request.form.get('nivel_roller'),           # 🔥 CABLE CONECTADO
         "sangre": request.form.get('sangre'),
         "eps": request.form.get('eps'),
         "emergencia_nombre": request.form.get('emergencia_nombre'),
@@ -261,7 +267,6 @@ def registrar():
         flash("✅ ¡Patinador guardado con éxito!", "success") 
     
     return redirect(url_for('home'))
-
 
 
 
@@ -618,6 +623,20 @@ def actualizar_nivel():
         {"$set": {"nivel_roller": data['nivel']}}
     )
     return jsonify({"success": True})
+
+
+
+
+
+
+
+# 🔄 ACTUALIZADOR DE ESTADOS EN EL HISTORIAL
+@app.route('/actualizar_estado_asistencia', methods=['POST'])
+def actualizar_estado_asistencia():
+    data = request.get_json()
+    # Le mandamos la orden a logic.py
+    exito = logic.cambiar_estado_asistencia(data['id'], data['estado'])
+    return jsonify({"success": exito})
 
 
 
